@@ -14,6 +14,7 @@ import re
 import subprocess
 import threading
 import time
+import urllib.request
 from datetime import datetime, timezone
 
 ROOT_DIR = "/Users/thomaslefevre/.t3/projects/forestia-mobile"
@@ -24,6 +25,7 @@ LAN_URL = f"http://192.168.1.111:{PORT}"
 
 
 def ensure_bridge_running() -> None:
+    black_frame_streak = 0
     while True:
         res = subprocess.run(["/usr/bin/pgrep", "-f", BRIDGE_BIN], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         if res.returncode != 0:
@@ -33,10 +35,38 @@ def ensure_bridge_running() -> None:
                 stdout=open("/tmp/forestia_bridge.log", "a"),
                 stderr=subprocess.STDOUT,
             )
+            black_frame_streak = 0
+        else:
+            # Watchdog: a 100% black 960x720 JPEG from forestia_bridge is ~11733 bytes.
+            # If the screen stays completely black for > 24s (6 checks), auto-restart DOSBoxPure.
+            try:
+                with urllib.request.urlopen(f"http://127.0.0.1:{PORT}/api/frame.jpg", timeout=2.5) as resp:
+                    frame_bytes = resp.read()
+                    if 0 < len(frame_bytes) < 13000:
+                        black_frame_streak += 1
+                    else:
+                        black_frame_streak = 0
+                if black_frame_streak >= 6:
+                    print("Watchdog: detected prolonged black screen, restarting DOSBoxPure...", flush=True)
+                    req = urllib.request.Request(f"http://127.0.0.1:{PORT}/api/input?type=restart", method="POST")
+                    urllib.request.urlopen(req, timeout=2.5).read()
+                    black_frame_streak = 0
+                    time.sleep(12)
+            except Exception:
+                pass
         time.sleep(4)
 
 
 def save_and_push_endpoint(tunnel_url: str) -> None:
+    try:
+        if os.path.exists(ENDPOINT_JSON):
+            with open(ENDPOINT_JSON, "r", encoding="utf-8") as f:
+                existing = json.load(f)
+            if existing.get("tunnelUrl") == tunnel_url and existing.get("lanUrl") == LAN_URL:
+                return
+    except Exception:
+        pass
+
     payload = {
         "tunnelUrl": tunnel_url,
         "lanUrl": LAN_URL,
