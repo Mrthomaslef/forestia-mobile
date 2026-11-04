@@ -1,0 +1,18 @@
+{
+  "name": "Forestia (1998) — Édition Cloud & Mobile",
+  "short_name": "Forestia",
+  "description": "Forestia (Daddy Oak / LaserMedia, 1998) jouable en direct sur téléphone et ordinateur",
+  "start_url": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#07120b",
+  "theme_color": "#0d2616",
+  "icons": [
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
