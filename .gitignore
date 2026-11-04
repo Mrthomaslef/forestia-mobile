@@ -5,3 +5,8 @@ extracted/
 *.jpg
 forestia_bridge
 display_mode
+retroarch/cores/
+retroarch/saves/
+retroarch/states/
+retroarch/system/
+retroarch/config/
