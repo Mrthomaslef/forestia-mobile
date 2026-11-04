@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Forestia" />
+  <meta name="theme-color" content="#07150c" />
+  <title>Forestia (1998) — Cloud & Mobile</title>
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg" />
+  <link rel="apple-touch-icon" href="assets/icon.svg" />
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    :root {
+      --bg-deep: #050e08;
+      --bg-panel: rgba(13, 33, 20, 0.86);
+      --border-leaf: rgba(74, 222, 128, 0.24);
+      --accent-green: #22c55e;
+      --accent-gold: #facc15;
+      --text-main: #ecfdf5;
+      --text-muted: #86efac;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 20%, #0f2918 0%, #050e08 75%);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top bar */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: calc(env(safe-area-inset-top, 0px) + 8px) 14px 8px 14px;
+      background: var(--bg-panel);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-leaf);
+      z-index: 20;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .brand img {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+
+    .brand-title {
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      opacity: 0.85;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #f59e0b;
+      box-shadow: 0 0 8px #f59e0b;
+      display: inline-block;
+    }
+
+    .status-dot.online {
+      background: #22c55e;
+      box-shadow: 0 0 10px #22c55e;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: nowrap;
+    }
+
+    .btn {
+      appearance: none;
+      border: 1px solid var(--border-leaf);
+      background: rgba(20, 50, 30, 0.75);
+      color: var(--text-main);
+      padding: 6px 11px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: transform 0.1s ease, background 0.15s ease, border-color 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn:active {
+      transform: scale(0.95);
+    }
+
+    .btn.active {
+      background: rgba(34, 197, 94, 0.28);
+      border-color: #4ade80;
+      color: #dcfce7;
+    }
+
+    .btn.gold {
+      background: rgba(250, 204, 21, 0.18);
+      border-color: rgba(250, 204, 21, 0.45);
+      color: #fef08a;
+    }
+
+    /* Main viewport stage */
+    .stage {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      padding: 4px;
+    }
+
+    .viewport-wrap {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(74, 222, 128, 0.22);
+      background: #000;
+      touch-action: none;
+      cursor: crosshair;
+    }
+
+    @media (min-aspect-ratio: 4/3) {
+      .viewport-wrap {
+        height: 100%;
+        width: auto;
+      }
+    }
+
+    @media (max-aspect-ratio: 4/3) {
+      .viewport-wrap {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    #gameScreen {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: fill;
+      pointer-events: none;
+      -webkit-user-drag: none;
+    }
+
+    /* Touch ripple indicator */
+    .touch-ripple {
+      position: absolute;
+      width: 34px;
+      height: 34px;
+      margin-left: -17px;
+      margin-top: -17px;
+      border-radius: 50%;
+      border: 2px solid #fef08a;
+      background: rgba(34, 197, 94, 0.25);
+      pointer-events: none;
+      transform: scale(0.3);
+      opacity: 1;
+      animation: rippleAnim 0.42s ease-out forwards;
+      z-index: 15;
+    }
+
+    @keyframes rippleAnim {
+      to {
+        transform: scale(1.35);
+        opacity: 0;
+      }
+    }
+
+    /* Bottom control dock */
+    .bottombar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 12px calc(env(safe-area-inset-bottom, 0px) + 8px) 12px;
+      background: var(--bg-panel);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border-leaf);
+      z-index: 20;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+
+    /* Sound unlock banner */
+    .sound-banner {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(16, 48, 28, 0.92);
+      border: 1px solid #4ade80;
+      color: #ecfdf5;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+      cursor: pointer;
+      z-index: 25;
+      transition: opacity 0.25s ease;
+    }
+
+    .sound-banner.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Fullscreen / Immersive mode */
+    body.immersive .topbar,
+    body.immersive .bottombar {
+      display: none;
+    }
+
+    body.immersive .stage {
+      padding: 0;
+    }
+
+    body.immersive .viewport-wrap {
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .floating-exit {
+      position: fixed;
+      top: calc(env(safe-area-inset-top, 0px) + 10px);
+      right: 12px;
+      z-index: 50;
+      display: none;
+      opacity: 0.65;
+    }
+
+    body.immersive .floating-exit {
+      display: inline-flex;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      <img src="assets/icon.svg" alt="Forestia" />
+      <div>
+        <div class="brand-title">Forestia (1998)</div>
+        <div class="brand-sub">
+          <span id="statusDot" class="status-dot"></span>
+          <span id="statusText">Connexion au serveur...</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <button id="btnAudio" class="btn gold" title="Activer/Couper le son du jeu">🔇 Son</button>
+      <button id="btnMode" class="btn active" title="Basculer entre Clic Gauche et Déplacement seul">👆 Clic direct</button>
+      <button id="btnFullscreen" class="btn" title="Mode Plein Écran">⛶ Plein écran</button>
+    </div>
+  </header>
+
+  <main class="stage">
+    <div id="soundBanner" class="sound-banner">
+      🔊 Touchez ici pour activer le son de la forêt
+    </div>
+
+    <div id="viewport" class="viewport-wrap">
+      <img id="gameScreen" alt="Forestia Stream" />
+    </div>
+  </main>
+
+  <button id="btnExitImmersive" class="btn floating-exit">✕ Barres</button>
+
+  <footer class="bottombar">
+    <button class="btn" data-key="escape">⎋ Échap (Passer intro)</button>
+    <button class="btn" data-key="space">␣ Espace</button>
+    <button class="btn" data-key="enter">↵ Entrée</button>
+    <button class="btn" id="btnRightClick">🖱️ Clic Droit</button>
+    <button class="btn" data-key="quicksave">💾 Sauvegarder (F5)</button>
+    <button class="btn" data-key="quickload">📂 Charger (F9)</button>
+    <button class="btn" data-key="fastforward">⏩ Vitesse (F3)</button>
+    <button class="btn" id="btnRestart" title="Relancer Forestia si l'écran est figé ou noir">🔄 Relancer</button>
+  </footer>
+
+  <script>
+    (function() {
+      const DEFAULT_LOCAL = "http://192.168.1.111:8790";
+      let apiBase = "";
+      let isConnected = false;
+      let frameLoopActive = false;
+      let touchMode = "click"; // "click" | "hover" | "right"
+
+      const screenEl = document.getElementById("gameScreen");
+      const viewportEl = document.getElementById("viewport");
+      const statusDot = document.getElementById("statusDot");
+      const statusText = document.getElementById("statusText");
+      const btnAudio = document.getElementById("btnAudio");
+      const btnMode = document.getElementById("btnMode");
+      const btnRightClick = document.getElementById("btnRightClick");
+      const btnFullscreen = document.getElementById("btnFullscreen");
+      const btnExitImmersive = document.getElementById("btnExitImmersive");
+      const btnRestart = document.getElementById("btnRestart");
+      const soundBanner = document.getElementById("soundBanner");
+
+      async function probeEndpoint(url, timeoutMs = 2500) {
+        if (!url) return false;
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), timeoutMs);
+        try {
+          const res = await fetch(url + "/api/status?t=" + Date.now(), {
+            signal: ctrl.signal,
+            cache: "no-store"
+          });
+          clearTimeout(t);
+          if (!res.ok) return false;
+          const data = await res.json();
+          return Boolean(data && data.ok);
+        } catch (e) {
+          clearTimeout(t);
+          return false;
+        }
+      }
+
+      async function discoverBackend() {
+        const candidates = [];
+        const qs = new URLSearchParams(window.location.search);
+        if (qs.get("api")) candidates.push(qs.get("api").replace(/\/$/, ""));
+
+        // If served directly from forestia_bridge (port 8790 or tunnel URL)
+        if (window.location.port === "8790" || window.location.hostname.endsWith(".trycloudflare.com")) {
+          candidates.push(window.location.origin);
+        }
+
+        // Fetch live endpoint.json from same origin / GitHub Pages
+        try {
+          const epRes = await fetch("endpoint.json?t=" + Date.now(), { cache: "no-store" });
+          if (epRes.ok) {
+            const ep = await epRes.json();
+            if (ep.tunnelUrl) candidates.push(ep.tunnelUrl.replace(/\/$/, ""));
+            if (ep.lanUrl) candidates.push(ep.lanUrl.replace(/\/$/, ""));
+          }
+        } catch (e) {}
+
+        if (window.location.protocol === "http:") {
+          candidates.push("http://127.0.0.1:8790");
+          candidates.push(DEFAULT_LOCAL);
+        } else {
+          candidates.push(DEFAULT_LOCAL);
+        }
+
+        for (const cand of candidates) {
+          if (await probeEndpoint(cand)) {
+            apiBase = cand;
+            onBackendReady();
+            return;
+          }
+        }
+
+        statusDot.classList.remove("online");
+        statusText.textContent = "Reconnexion au Mac...";
+        setTimeout(discoverBackend, 2500);
+      }
+
+      function onBackendReady() {
+        isConnected = true;
+        statusDot.classList.add("online");
+        const isCloud = apiBase.includes("trycloudflare.com");
+        statusText.textContent = isCloud ? "En ligne • Cloud 4G/Wi-Fi" : "En ligne • Réseau Direct";
+        startVideoStream();
+      }
+
+      function startVideoStream() {
+        if (frameLoopActive) return;
+        frameLoopActive = true;
+        pollFramesLoop();
+      }
+
+      async function pollFramesLoop() {
+        let failCount = 0;
+        while (isConnected) {
+          const t0 = performance.now();
+          const ctrl = new AbortController();
+          const timer = setTimeout(() => ctrl.abort(), 3500);
+          try {
+            const res = await fetch(apiBase + "/api/frame.jpg?t=" + Date.now(), {
+              cache: "no-store",
+              signal: ctrl.signal
+            });
+            clearTimeout(timer);
+            if (res.ok) {
+              failCount = 0;
+              const blob = await res.blob();
+              const objUrl = URL.createObjectURL(blob);
+              const prev = screenEl.dataset.blobUrl;
+              screenEl.src = objUrl;
+              screenEl.dataset.blobUrl = objUrl;
+              if (prev) URL.revokeObjectURL(prev);
+            } else {
+              failCount++;
+            }
+          } catch (e) {
+            clearTimeout(timer);
+            failCount++;
+          }
+          if (failCount >= 6) {
+            isConnected = false;
+            frameLoopActive = false;
+            statusDot.classList.remove("online");
+            statusText.textContent = "Reconnexion au Mac...";
+            discoverBackend();
+            return;
+          }
+          const elapsed = performance.now() - t0;
+          const wait = Math.max(12, 42 - elapsed);
+          await new Promise(r => setTimeout(r, wait));
+        }
+        frameLoopActive = false;
+      }
+
+      // Input handling (Mouse & Touch)
+      function getNormalizedCoords(clientX, clientY) {
+        const rect = viewportEl.getBoundingClientRect();
+        const x = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+        const y = Math.max(0, Math.min(1, (clientY - rect.top) / rect.height));
+        return { x: x.toFixed(4), y: y.toFixed(4), px: clientX - rect.left, py: clientY - rect.top };
+      }
+
+      function showRipple(px, py) {
+        const r = document.createElement("div");
+        r.className = "touch-ripple";
+        r.style.left = px + "px";
+        r.style.top = py + "px";
+        viewportEl.appendChild(r);
+        setTimeout(() => r.remove(), 450);
+      }
+
+      function sendInput(params) {
+        if (!apiBase) return;
+        const qs = new URLSearchParams(params).toString();
+        fetch(apiBase + "/api/input?" + qs, { method: "POST", keepalive: true }).catch(() => {});
+      }
+
+      let lastMoveSent = 0;
+      let isPointerDown = false;
+
+      viewportEl.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
+        unlockAudioIfNeeded();
+        isPointerDown = true;
+        const c = getNormalizedCoords(e.clientX, e.clientY);
+        showRipple(c.px, c.py);
+
+        if (e.pointerType === "mouse") {
+          const btn = e.button === 2 ? "right" : "left";
+          sendInput({ type: "mouse", action: "down", x: c.x, y: c.y, button: btn });
+        } else {
+          // Touch input
+          if (touchMode === "hover") {
+            sendInput({ type: "mouse", action: "move", x: c.x, y: c.y });
+          } else if (touchMode === "right") {
+            sendInput({ type: "mouse", action: "click", x: c.x, y: c.y, button: "right" });
+            setTouchMode("click");
+          } else {
+            sendInput({ type: "mouse", action: "down", x: c.x, y: c.y, button: "left" });
+          }
+        }
+      });
+
+      viewportEl.addEventListener("pointermove", (e) => {
+        const now = performance.now();
+        if (now - lastMoveSent < 28) return;
+        lastMoveSent = now;
+        const c = getNormalizedCoords(e.clientX, e.clientY);
+        if (e.pointerType === "mouse") {
+          sendInput({ type: "mouse", action: isPointerDown ? "drag" : "move", x: c.x, y: c.y });
+        } else if (isPointerDown) {
+          sendInput({ type: "mouse", action: touchMode === "hover" ? "move" : "drag", x: c.x, y: c.y });
+        }
+      });
+
+      viewportEl.addEventListener("pointerup", (e) => {
+        e.preventDefault();
+        if (!isPointerDown) return;
+        isPointerDown = false;
+        const c = getNormalizedCoords(e.clientX, e.clientY);
+        if (e.pointerType === "mouse") {
+          const btn = e.button === 2 ? "right" : "left";
+          sendInput({ type: "mouse", action: "up", x: c.x, y: c.y, button: btn });
+        } else if (touchMode === "click") {
+          sendInput({ type: "mouse", action: "up", x: c.x, y: c.y, button: "left" });
+        }
+      });
+
+      viewportEl.addEventListener("contextmenu", (e) => e.preventDefault());
+
+      function setTouchMode(m) {
+        touchMode = m;
+        btnMode.classList.toggle("active", m === "click");
+        btnMode.textContent = m === "click" ? "👆 Clic direct" : "🎯 Déplacer curseur";
+        btnRightClick.classList.toggle("active", m === "right");
+      }
+
+      btnMode.addEventListener("click", () => {
+        setTouchMode(touchMode === "click" ? "hover" : "click");
+      });
+
+      btnRightClick.addEventListener("click", () => {
+        setTouchMode(touchMode === "right" ? "click" : "right");
+      });
+
+      document.querySelectorAll("[data-key]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          unlockAudioIfNeeded();
+          sendInput({ type: "key", key: btn.dataset.key });
+        });
+      });
+
+      if (btnRestart) {
+        btnRestart.addEventListener("click", () => {
+          unlockAudioIfNeeded();
+          statusText.textContent = "Redémarrage de Forestia...";
+          sendInput({ type: "restart" });
+          setTimeout(() => {
+            if (isConnected) {
+              const isCloud = apiBase.includes("trycloudflare.com");
+              statusText.textContent = isCloud ? "En ligne • Cloud 4G/Wi-Fi" : "En ligne • Réseau Direct";
+            }
+          }, 5000);
+        });
+      }
+
+      window.addEventListener("keydown", (e) => {
+        const map = {
+          Escape: "escape",
+          Enter: "enter",
+          " ": "space",
+          ArrowUp: "up",
+          ArrowDown: "down",
+          ArrowLeft: "left",
+          ArrowRight: "right"
+        };
+        if (map[e.key]) {
+          e.preventDefault();
+          sendInput({ type: "key", key: map[e.key] });
+        }
+      });
+
+      // Fullscreen & Immersive toggle
+      function toggleImmersive() {
+        if (document.documentElement.requestFullscreen && !document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        }
+        document.body.classList.toggle("immersive");
+      }
+
+      btnFullscreen.addEventListener("click", toggleImmersive);
+      btnExitImmersive.addEventListener("click", () => {
+        if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+        document.body.classList.remove("immersive");
+      });
+
+      // WebAudio low-latency PCM player (48kHz stereo Int16)
+      let audioCtx = null;
+      let audioEnabled = false;
+      let audioSeq = 0;
+      let nextPlayTime = 0;
+      let audioPolling = false;
+
+      function unlockAudioIfNeeded() {
+        if (!audioEnabled) {
+          enableAudio();
+        } else if (audioCtx && audioCtx.state === "suspended") {
+          audioCtx.resume();
+        }
+      }
+
+      function enableAudio() {
+        if (!audioCtx) {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          audioCtx = new AC({ sampleRate: 48000 });
+        }
+        audioCtx.resume();
+        audioEnabled = true;
+        btnAudio.textContent = "🔊 Son Actif";
+        btnAudio.classList.add("active");
+        soundBanner.classList.add("hidden");
+        if (!audioPolling) {
+          audioPolling = true;
+          pollAudioLoop();
+        }
+      }
+
+      function disableAudio() {
+        audioEnabled = false;
+        btnAudio.textContent = "🔇 Son Muet";
+        btnAudio.classList.remove("active");
+      }
+
+      btnAudio.addEventListener("click", () => {
+        if (audioEnabled) disableAudio();
+        else enableAudio();
+      });
+
+      soundBanner.addEventListener("click", () => {
+        enableAudio();
+      });
+
+      async function pollAudioLoop() {
+        while (true) {
+          if (!audioEnabled || !apiBase || !isConnected) {
+            await new Promise(r => setTimeout(r, 200));
+            continue;
+          }
+          try {
+            const res = await fetch(apiBase + "/api/audio.pcm?after=" + audioSeq + "&t=" + Date.now(), {
+              cache: "no-store"
+            });
+            if (res.ok) {
+              const seqHeader = res.headers.get("X-Audio-Seq");
+              if (seqHeader) audioSeq = parseInt(seqHeader, 10) || audioSeq;
+              const buf = await res.arrayBuffer();
+              if (buf.byteLength >= 4 && audioCtx) {
+                const int16 = new Int16Array(buf);
+                const frames = Math.floor(int16.length / 2);
+                if (frames > 0) {
+                  const audioBuffer = audioCtx.createBuffer(2, frames, 48000);
+                  const left = audioBuffer.getChannelData(0);
+                  const right = audioBuffer.getChannelData(1);
+                  for (let i = 0; i < frames; i++) {
+                    left[i] = int16[i * 2] / 32768.0;
+                    right[i] = int16[i * 2 + 1] / 32768.0;
+                  }
+                  const src = audioCtx.createBufferSource();
+                  src.buffer = audioBuffer;
+                  src.connect(audioCtx.destination);
+                  const now = audioCtx.currentTime;
+                  if (nextPlayTime < now || nextPlayTime > now + 0.45) {
+                    nextPlayTime = now + 0.04;
+                  }
+                  src.start(nextPlayTime);
+                  nextPlayTime += audioBuffer.duration;
+                }
+              }
+            }
+          } catch (e) {}
+          await new Promise(r => setTimeout(r, 95));
+        }
+      }
+
+      discoverBackend();
+    })();
+  </script>
+</body>
+</html>
