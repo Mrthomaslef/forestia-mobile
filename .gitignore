@@ -10,3 +10,8 @@ retroarch/saves/
 retroarch/states/
 retroarch/system/
 retroarch/config/
+recomp/cd_raw/
+recomp/tools/
+recomp/decompiled/
+
+
