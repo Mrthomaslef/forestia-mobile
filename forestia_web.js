@@ -294,7 +294,7 @@
 
     async init() {
       this.setStatus("Chargement de web_assets/forestia_data.json...");
-      const resp = await fetch("web_assets/forestia_data.json");
+      const resp = await fetch("web_assets/forestia_data.json?v=20261109");
       this.data = await resp.json();
 
       this.bindEvents();
@@ -303,7 +303,7 @@
       this.goMenu("sommaire");
       this.startRenderLoop();
       this.setStatus(
-        `Moteur Forestia prêt — ${this.data.meta.totalBinaries} binaires Director 6 (${this.data.meta.totalDecompiledScripts} scripts Lingo décompilés).`
+        `Moteur Forestia prêt — ${this.data.meta.totalBinaries} binaires Director 6 (${this.data.meta.totalDecompiledScripts} scripts Lingo décompilés, 640/640 nœuds interactifs).`
       );
     }
 
@@ -642,120 +642,97 @@
         if (sc) {
           const img = this.getImage(sc.src);
           if (img) ctx.drawImage(img, 0, 0, STAGE_W, STAGE_H);
+          // Bind authentic VWSC Score hotspots extracted from FRST.Dxr
+          (sc.hotspots || []).forEach((hs) => {
+            const clickMap = hs.clickOnTargets || {};
+            const target = clickMap[String(hs.spr)] || hs.target || "";
+            const tu = target.toUpperCase();
+            if (hs.beh === "1:53" || tu === "NOUVELLE") {
+              hotspots.push({
+                x: hs.x, y: hs.y, w: hs.w, h: hs.h, cursor: "hand",
+                label: "Nouvelle Partie",
+                action: () => this.openProfileModal("new")
+              });
+            } else if (hs.beh === "1:28" || tu === "THEPARTIE" || tu === "PARTIE") {
+              hotspots.push({
+                x: hs.x, y: hs.y, w: hs.w, h: hs.h, cursor: "hand",
+                label: "Reprendre une Partie / Choisir Profil",
+                action: () => this.openProfileModal("select")
+              });
+            } else if (tu === "QUITTER") {
+              hotspots.push({
+                x: hs.x, y: hs.y, w: hs.w, h: hs.h, cursor: "hand",
+                label: "Quitter / Générique de Fin",
+                action: () => {
+                  this.state.subMode = "GENERIQUE";
+                  this.playSound(2, "ADIEU", "sfx");
+                }
+              });
+            } else if (tu === "AIDE1" || tu === "AIDE2") {
+              hotspots.push({
+                x: hs.x, y: hs.y, w: hs.w, h: hs.h, cursor: "hand",
+                label: "Aide de Forestia",
+                action: () => this.goMenu("aide1")
+              });
+            } else if (tu === "SOMMAIRE" || tu === "SORTIEBAJ") {
+              hotspots.push({
+                x: hs.x, y: hs.y, w: hs.w, h: hs.h, cursor: "hand",
+                label: "Retour au Sommaire",
+                action: () => this.goMenu(subMode === "FORET" || subMode === "Sjeux" ? "reprise" : "sommaire")
+              });
+            } else if (hs.beh === "1:51" || tu === "FORET") {
+              hotspots.push({
+                x: hs.x, y: hs.y, w: hs.w, h: hs.h, cursor: "hand",
+                label: "Entrer dans la Forêt (Matin, Midi, Nuit)",
+                action: () => this.openPeriodSelector()
+              });
+            } else if (hs.beh === "1:8" || tu === "ALBUM") {
+              hotspots.push({
+                x: hs.x, y: hs.y, w: hs.w, h: hs.h, cursor: "hand",
+                label: "Ouvrir l'Album de Forestia",
+                action: () => this.openAlbum("sommaire")
+              });
+            } else if (hs.beh === "1:56" || tu === "SJEUX2" || tu === "SJEUX" || tu === "SJEUX3") {
+              hotspots.push({
+                x: hs.x, y: hs.y, w: hs.w, h: hs.h, cursor: "hand",
+                label: "La Boîte à Jeux (9 épisodes)",
+                action: () => this.goMenu("Sjeux")
+              });
+            } else if (tu === "MATIN" || tu === "MIDI" || tu === "SOIR") {
+              hotspots.push({
+                x: hs.x, y: hs.y, w: hs.w, h: hs.h, cursor: "hand",
+                label: `Promenade en Forêt (${tu})`,
+                action: () => this.enterForest(tu, "AB0")
+              });
+            } else if (/^F[123][123]$/.test(tu)) {
+              const epMap = { F11: 1, F12: 2, F13: 3, F21: 4, F22: 5, F23: 6, F31: 7, F32: 8, F33: 9 };
+              const epId = epMap[tu] || 1;
+              const ep = EPISODES.find((e) => e.id === epId) || EPISODES[0];
+              hotspots.push({
+                x: hs.x, y: hs.y, w: hs.w, h: hs.h, cursor: "hand",
+                label: ep.title,
+                action: () => this.goMenu(tu)
+              });
+            } else if (/^\*?F[1-9]$/.test(tu)) {
+              const epId = Number(tu.replace(/\D/g, "")) || 1;
+              const isGameOnly = hs.spr === 47;
+              hotspots.push({
+                x: hs.x, y: hs.y, w: hs.w, h: hs.h, cursor: "hand",
+                label: isGameOnly ? `Jouer directement l'Épisode ${epId}` : `Lancer l'Aventure de l'Épisode ${epId}`,
+                action: () => this.openEpisode(epId, isGameOnly ? 2 : 0)
+              });
+            }
+          });
         }
 
         if (subMode === "sommaire") {
-          // Menu Principal FRST hotspots
-          hotspots.push(
-            {
-              x: 40, y: 38, w: 220, h: 62, cursor: "hand",
-              label: "Nouvelle Partie",
-              action: () => this.openProfileModal("new")
-            },
-            {
-              x: 35, y: 108, w: 225, h: 62, cursor: "hand",
-              label: "Reprendre une Partie / Choisir Profil",
-              action: () => this.openProfileModal("select")
-            },
-            {
-              x: 35, y: 335, w: 120, h: 42, cursor: "hand",
-              label: "Quitter / Générique de Fin",
-              action: () => {
-                this.state.subMode = "GENERIQUE";
-                this.playSound(2, "ADIEU", "sfx");
-              }
-            },
-            {
-              x: 162, y: 335, w: 135, h: 42, cursor: "hand",
-              label: "Sommaire Aventure & Promenade",
-              action: () => this.goMenu("reprise")
-            },
-            {
-              x: 305, y: 335, w: 245, h: 42, cursor: "hand",
-              label: "Aide générale (AIDEG.Dxr)",
-              action: () => this.goMenu("aide1")
-            },
-            {
-              x: 120, y: 180, w: 220, h: 145, cursor: "hand",
-              label: "Entrer dans la Forêt (Sam le Lapin)",
-              action: () => this.goMenu("reprise")
-            }
-          );
-        } else if (subMode === "reprise") {
-          // Sommaire Aventure / Boîte à jeux / Promenade libre / Album
-          hotspots.push(
-            {
-              x: 110, y: 55, w: 420, h: 95, cursor: "hand",
-              label: "La Grande Aventure (Rencontre avec Sam & les 9 Épisodes)",
-              action: () => this.openSampres()
-            },
-            {
-              x: 110, y: 165, w: 420, h: 85, cursor: "hand",
-              label: "La Boîte à Jeux (Accès direct aux 9 épisodes)",
-              action: () => this.goMenu("Sjeux")
-            },
-            {
-              x: 110, y: 260, w: 420, h: 80, cursor: "hand",
-              label: "Promenade Libre en Forêt (Matin, Midi, Nuit)",
-              action: () => this.openPeriodSelector()
-            },
-            {
-              x: 40, y: 390, w: 180, h: 60, cursor: "hand",
-              label: "Retour au Menu Principal",
-              action: () => this.goMenu("sommaire")
-            },
-            {
-              x: 430, y: 390, w: 180, h: 60, cursor: "hand",
-              label: "Ouvrir l'Album de Forestia",
-              action: () => this.openAlbum("sommaire")
-            }
-          );
-        } else if (subMode === "FORET" || subMode === "MATIN" || subMode === "MIDI" || subMode === "SOIR") {
-          // Choix de la période (Matin / Midi / Soir)
-          hotspots.push(
-            {
-              x: 85, y: 90, w: 155, h: 260, cursor: "hand",
-              label: "Forêt du Matin (F_01.Dxr — 207 scènes)",
-              action: () => this.enterForest("MATIN", "AB0")
-            },
-            {
-              x: 245, y: 90, w: 155, h: 260, cursor: "hand",
-              label: "Forêt du Midi (F_02.Dxr — 227 scènes)",
-              action: () => this.enterForest("MIDI", "AB0")
-            },
-            {
-              x: 405, y: 90, w: 155, h: 260, cursor: "hand",
-              label: "Forêt de la Nuit (F_03.Dxr — 206 scènes)",
-              action: () => this.enterForest("SOIR", "AB0")
-            },
-            {
-              x: 220, y: 390, w: 200, h: 60, cursor: "hand",
-              label: "Retour au Sommaire",
-              action: () => this.goMenu("reprise")
-            }
-          );
-        } else if (subMode === "Sjeux") {
-          // Boîte à jeux : grille des 9 épisodes
-          EPISODES.forEach((ep, idx) => {
-            const col = idx % 3;
-            const row = Math.floor(idx / 3);
-            hotspots.push({
-              x: 80 + col * 165,
-              y: 65 + row * 110,
-              w: 150,
-              h: 95,
-              cursor: "hand",
-              label: ep.title,
-              action: () => this.openEpisode(ep.id, 0)
-            });
-          });
+          // Ensure Sam le Lapin character sprite on main menu opens the adventure/reprise menu
           hotspots.push({
-            x: 220, y: 405, w: 200, h: 55, cursor: "hand",
-            label: "Retour au Sommaire",
+            x: 120, y: 180, w: 220, h: 145, cursor: "hand",
+            label: "Entrer dans la Forêt (Sam le Lapin)",
             action: () => this.goMenu("reprise")
           });
-        } else {
-          // Any other FRST subscene (aide1, GENERIQUE, ile, etc.) -> click anywhere to return
+        } else if (hotspots.length === 0) {
           hotspots.push({
             x: 20, y: 20, w: 600, h: 440, cursor: "hand",
             label: "Retour au Menu Principal",
@@ -764,10 +741,11 @@
         }
       } else if (mode === "FORET") {
         // Render authentic Director 6 forest exploration stage:
-        // Outer wood frame / HUD from F_01 AB0 composite + current node 454x358 viewport at (93, 61)
-        const baseHud = (this.data.scenes.F_01 && this.data.scenes.F_01["AB0"])
-          ? this.getImage(this.data.scenes.F_01["AB0"].src)
-          : null;
+        // Outer wood frame / HUD from period AB0 composite + current node 454x358 viewport at (93, 61)
+        const movieKey = period === "MATIN" ? "F_01" : period === "MIDI" ? "F_02" : "F_03";
+        const baseHudScene = (this.data.scenes[movieKey] && this.data.scenes[movieKey]["AB0"])
+          || (this.data.scenes.F_01 && this.data.scenes.F_01["AB0"]);
+        const baseHud = baseHudScene ? this.getImage(baseHudScene.src) : null;
         if (baseHud) {
           ctx.drawImage(baseHud, 0, 0, STAGE_W, STAGE_H);
         }
@@ -775,8 +753,6 @@
         const nodes = this.data.forestNodes[period] || {};
         const node = nodes[currentNode] || nodes["AB0"];
         if (node) {
-          // Check if we have a full 640x480 composite scene for this specific label (e.g. aquarium, herisson, etc.)
-          const movieKey = period === "MATIN" ? "F_01" : period === "MIDI" ? "F_02" : "F_03";
           const compScene = this.data.scenes[movieKey] && this.data.scenes[movieKey][currentNode];
           if (compScene) {
             const compImg = this.getImage(compScene.src);
@@ -788,29 +764,36 @@
             }
           }
 
-          // Node-specific interactive hotspots from Director Score
+          // Node-specific interactive hotspots from Director 6 Score (32-bit props_idx)
+          let hasLeft = false;
+          let hasRight = false;
+          let hasCenter = false;
+          let hasBack = false;
+
           (node.hotspots || []).forEach((hs) => {
-            if (hs.photo) {
+            const playHsSound = () => {
+              if (hs.sound) this.playSound(3, hs.sound, "sfx");
+              else this.playSound(3, "CLIC", "sfx");
+            };
+
+            if (hs.photo || hs.animal) {
+              const animId = hs.photo || hs.animal;
               hotspots.push({
-                x: Math.max(93, hs.x - hs.w / 2),
-                y: Math.max(61, hs.y - hs.h / 2),
+                x: Math.max(93, hs.x),
+                y: Math.max(61, hs.y),
                 w: hs.w,
                 h: hs.h,
                 cursor: "photo",
-                label: `Photographier l'animal (#${hs.photo})`,
+                label: `Photographier l'animal (#${animId})`,
                 action: () => {
-                  if (this.state.Gcurseur === 2) {
-                    this.takePhoto(hs.photo);
-                  } else {
-                    this.state.Gcurseur = 2;
-                    this.takePhoto(hs.photo);
-                  }
+                  this.state.Gcurseur = 2;
+                  this.takePhoto(animId);
                 }
               });
             } else if (hs.fleur) {
               hotspots.push({
-                x: Math.max(93, hs.x - hs.w / 2),
-                y: Math.max(61, hs.y - hs.h / 2),
+                x: Math.max(93, hs.x),
+                y: Math.max(61, hs.y),
                 w: hs.w,
                 h: hs.h,
                 cursor: "hand",
@@ -818,84 +801,171 @@
                 action: () => this.collectHerbier(hs.fleur)
               });
             } else if (hs.target) {
+              const tgt = hs.target;
+              const isLeft = hs.spr === 33 || hs.spr === 38 || hs.x < 140;
+              const isRight = hs.spr === 32 || hs.spr === 37 || hs.x > 470;
+              const isBack = hs.spr === 39 || hs.y > 410;
+              if (isBack) hasBack = true;
+              else if (isLeft) hasLeft = true;
+              else if (isRight) hasRight = true;
+              else hasCenter = true;
+
+              const curType = isBack ? "back" : isLeft ? "left" : isRight ? "right" : "forward";
               hotspots.push({
                 x: hs.x,
                 y: hs.y,
                 w: hs.w,
                 h: hs.h,
-                cursor: "forward",
-                label: `Aller vers ${hs.target}`,
+                cursor: this.state.Gcurseur === 2 ? "photo" : curType,
+                label: `Aller vers ${tgt}`,
                 action: () => {
-                  if (hs.target === "tour") {
+                  playHsSound();
+                  if (tgt === "tour") {
                     this.enterTourVR();
-                  } else if (hs.target === "<SC" || hs.target === "PSC1") {
+                  } else if (tgt === "<SC" || tgt === "PSC1" || tgt === "VXSCierie") {
                     this.openScierie(1);
+                  } else if (tgt.toUpperCase() === "ALBUM" || tgt === "#album") {
+                    this.openAlbum("sommaire");
+                  } else if (tgt.toUpperCase() === "PLAN") {
+                    this.openPlanMap();
+                  } else if (hs.movie && /^F_[123][123][123]$/i.test(hs.movie)) {
+                    const epMatch = EPISODES.find((e) => e.code === hs.movie.toUpperCase() || e.gameCode === hs.movie.toUpperCase());
+                    if (epMatch) this.openEpisode(epMatch.id, 0);
                   } else {
-                    this.playSound(3, "CLIC", "sfx");
-                    this.enterForest(period, hs.target);
+                    this.state.previousNode = currentNode;
+                    this.enterForest(period, tgt);
+                  }
+                }
+              });
+            } else if (hs.action) {
+              const actType = hs.action;
+              const isLeft = hs.spr === 33 || hs.spr === 38 || hs.x < 140;
+              const isRight = hs.spr === 32 || hs.spr === 37 || hs.x > 470;
+              const isBack = hs.spr === 39 || hs.y > 410 || actType === "demitour" || actType === "back" || actType === "previous";
+              if (hs.spr === 39 || hs.y > 410) hasBack = true;
+              else if (isLeft) hasLeft = true;
+              else if (isRight) hasRight = true;
+              else hasCenter = true;
+
+              const curType = isBack
+                ? "back"
+                : isLeft
+                  ? "left"
+                  : isRight
+                    ? "right"
+                    : actType === "next"
+                      ? "forward"
+                      : "hand";
+              const lblMap = {
+                demitour: "Demi-tour (Regarder derrière soi)",
+                next: `Continuer sur le sentier (${node.nextLabel || "AB0"})`,
+                previous: `Revenir sur ses pas (${node.prevLabel || this.state.previousNode || "AB0"})`,
+                back: "Retour",
+                album: "Ouvrir l'Album de Forestia",
+                plan: "Ouvrir la Carte de la Forêt",
+                aide: "Aide de la Forêt",
+                episode: "Continuer l'Aventure"
+              };
+              hotspots.push({
+                x: hs.x,
+                y: hs.y,
+                w: hs.w,
+                h: hs.h,
+                cursor: curType,
+                label: lblMap[actType] || "Interagir",
+                action: () => {
+                  playHsSound();
+                  if (actType === "demitour") {
+                    const rev = currentNode.endsWith(" #")
+                      ? currentNode.replace(/\s*#$/, "")
+                      : `${currentNode} #`;
+                    if (nodes[rev]) this.enterForest(period, rev);
+                    else if (node.prevLabel) this.enterForest(period, node.prevLabel);
+                  } else if (actType === "next") {
+                    if (node.nextLabel) {
+                      this.state.previousNode = currentNode;
+                      this.enterForest(period, node.nextLabel);
+                    }
+                  } else if (actType === "previous" || actType === "back") {
+                    const dest = this.state.previousNode && nodes[this.state.previousNode]
+                      ? this.state.previousNode
+                      : node.prevLabel || "AB0";
+                    this.enterForest(period, dest);
+                  } else if (actType === "album") {
+                    this.openAlbum("sommaire");
+                  } else if (actType === "plan") {
+                    this.openPlanMap();
+                  } else if (actType === "episode") {
+                    this.goMenu("Sjeux");
+                  } else if (actType === "aide") {
+                    this.showToast("💡 Astuce : Clique sur le sentier pour avancer, en bas pour faire demi-tour, ou sur l'appareil photo à gauche !");
                   }
                 }
               });
             }
           });
 
-          // Standard Forestia Viewport Navigation Zones (Sprites 32..39)
-          // Left turn (Spr 33/36)
-          hotspots.push({
-            x: 93, y: 61, w: 68, h: 358, cursor: "left",
-            label: "Tourner à gauche / Sentier précédent",
-            action: () => {
-              this.playSound(3, "CLIC", "sfx");
-              if (node.prevLabel) this.enterForest(period, node.prevLabel);
-            }
-          });
-          // Forward center (Spr 34/35)
-          hotspots.push({
-            x: 165, y: 90, w: 310, h: 280, cursor: this.state.Gcurseur === 2 ? "photo" : "forward",
-            label: this.state.Gcurseur === 2
-              ? "Prendre une photo dans cette clairière"
-              : `Avancer sur le sentier (${node.nextLabel || "AB0"})`,
-            action: () => {
-              if (this.state.Gcurseur === 2) {
-                // Find an animal associated with this node or region
-                const regionAnimals = period === "MATIN"
-                  ? [14, 17, 19, 22, 24, 30, 31, 35, 37, 45, 48, 49, 53, 63, 68, 71, 80]
-                  : period === "MIDI"
-                    ? [1, 4, 6, 8, 9, 11, 13, 15, 16, 18, 23, 26, 27, 32, 38, 40, 42, 46, 52, 60]
-                    : [2, 33, 36, 39, 41, 44, 47, 51, 57, 59, 61, 65, 67, 69];
-                const pick = regionAnimals[(node.frame || 0) % regionAnimals.length];
-                this.takePhoto(pick);
-              } else if (node.nextLabel) {
+          // Fallback standard viewport zones only when not already covered by node VWSC hotspots
+          if (!hasLeft) {
+            hotspots.push({
+              x: 93, y: 61, w: 68, h: 358, cursor: "left",
+              label: "Tourner à gauche / Sentier précédent",
+              action: () => {
                 this.playSound(3, "CLIC", "sfx");
-                this.enterForest(period, node.nextLabel);
+                if (node.prevLabel) this.enterForest(period, node.prevLabel);
               }
-            }
-          });
-          // Right turn (Spr 32)
-          hotspots.push({
-            x: 480, y: 61, w: 67, h: 358, cursor: "right",
-            label: "Tourner à droite / Sentier suivant",
-            action: () => {
-              this.playSound(3, "CLIC", "sfx");
-              if (node.nextLabel) this.enterForest(period, node.nextLabel);
-            }
-          });
-          // Bottom U-turn / Demitour (Spr 39 at 320, 446)
-          hotspots.push({
-            x: 270, y: 422, w: 100, h: 48, cursor: "back",
-            label: "Demi-tour (Regarder derrière soi)",
-            action: () => {
-              this.playSound(3, "CLIC", "sfx");
-              const rev = currentNode.endsWith(" #")
-                ? currentNode.replace(/\s*#$/, "")
-                : `${currentNode} #`;
-              if (nodes[rev]) {
-                this.enterForest(period, rev);
-              } else if (node.prevLabel) {
-                this.enterForest(period, node.prevLabel);
+            });
+          }
+          if (!hasCenter) {
+            hotspots.push({
+              x: 165, y: 90, w: 310, h: 280, cursor: this.state.Gcurseur === 2 ? "photo" : "forward",
+              label: this.state.Gcurseur === 2
+                ? "Prendre une photo dans cette clairière"
+                : `Avancer sur le sentier (${node.nextLabel || "AB0"})`,
+              action: () => {
+                if (this.state.Gcurseur === 2) {
+                  const regionAnimals = period === "MATIN"
+                    ? [14, 17, 19, 22, 24, 30, 31, 35, 37, 45, 48, 49, 53, 63, 68, 71, 80]
+                    : period === "MIDI"
+                      ? [1, 4, 6, 8, 9, 11, 13, 15, 16, 18, 23, 26, 27, 32, 38, 40, 42, 46, 52, 60]
+                      : [2, 33, 36, 39, 41, 44, 47, 51, 57, 59, 61, 65, 67, 69];
+                  const pick = regionAnimals[(node.frame || 0) % regionAnimals.length];
+                  this.takePhoto(pick);
+                } else if (node.nextLabel) {
+                  this.playSound(3, "CLIC", "sfx");
+                  this.state.previousNode = currentNode;
+                  this.enterForest(period, node.nextLabel);
+                }
               }
-            }
-          });
+            });
+          }
+          if (!hasRight) {
+            hotspots.push({
+              x: 480, y: 61, w: 67, h: 358, cursor: "right",
+              label: "Tourner à droite / Sentier suivant",
+              action: () => {
+                this.playSound(3, "CLIC", "sfx");
+                if (node.nextLabel) this.enterForest(period, node.nextLabel);
+              }
+            });
+          }
+          if (!hasBack) {
+            hotspots.push({
+              x: 270, y: 422, w: 100, h: 48, cursor: "back",
+              label: "Demi-tour (Regarder derrière soi)",
+              action: () => {
+                this.playSound(3, "CLIC", "sfx");
+                const rev = currentNode.endsWith(" #")
+                  ? currentNode.replace(/\s*#$/, "")
+                  : `${currentNode} #`;
+                if (nodes[rev]) {
+                  this.enterForest(period, rev);
+                } else if (node.prevLabel) {
+                  this.enterForest(period, node.prevLabel);
+                }
+              }
+            });
+          }
         }
 
         // Standard Forestia Left & Right HUD Potars (Sprites 42..47)

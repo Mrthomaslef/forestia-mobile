@@ -1,27 +1,28 @@
 {
-  "schemaVersion": "REA-2.0",
-  "project": "Forestia (1998, LaserMedia / Dadalife) — Universal Web Recompilation",
-  "generatedAt": "2026-11-08T22:50:50Z",
-  "methodology": "REA (morluto/rea) Obligation Ledger + ProjectorRays Director 6 Lingo Bytecode Decompiler + Native HTML5/Canvas/WebAudio Runtime",
+  "schemaVersion": "REA-2.1",
+  "project": "Forestia (1998, LaserMedia / Dadalife) — Web Asset & Score Extraction Bundle",
+  "generatedAt": "2026-11-09T07:06:18Z",
+  "methodology": "ProjectorRays Director 6 Lingo Decompiler + RIFX 32-bit VWSC Score/Cast Extractor + HTML5 Canvas Runtime",
   "metrics": {
-    "totalBinaries": 77,
-    "moviesCount": 28,
-    "castLibrariesCount": 49,
-    "totalDecompiledScripts": 9327,
-    "totalDecompiledLines": 71781,
-    "palettesExtracted": 73,
+    "totalBinaries": 79,
+    "moviesCount": 40,
+    "castLibrariesCount": 39,
+    "totalDecompiledScripts": 9424,
+    "totalDecompiledLines": 74832,
+    "palettesExtracted": 145,
     "forestNodesExtracted": 640,
+    "forestNodesWithActions": 640,
     "animalPhotosExtracted": 72,
     "herbierSpecimensExtracted": 31,
     "espSpreadsExtracted": 74,
-    "audioTracksConverted": 400,
-    "CompositeScenesRendered": 145
+    "audioTracksConverted": 401,
+    "CompositeScenesRendered": 146
   },
   "obligations": [
     {
       "id": "OBL-001-AIDEG",
       "binary": "AIDEG.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 18676,
       "sha256": "c0c20ad8178fe040175f2bd82aa46d7e226f6688746a3af2ac099a4d917c7cf1",
       "decompiledScripts": 9,
@@ -34,8 +35,8 @@
         "prepareFrame",
         "startMovie"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (9 Lingo scripts, 99 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (9 scripts, 99 LOC)"
     },
     {
       "id": "OBL-002-BAJ",
@@ -48,8 +49,8 @@
       "handlers": [
         "exitFrame"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (4 Lingo scripts, 19 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (4 scripts, 19 LOC)"
     },
     {
       "id": "OBL-003-CF",
@@ -65,8 +66,8 @@
         "mouseUp",
         "prepareFrame"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (90 Lingo scripts, 299 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (90 scripts, 299 LOC)"
     },
     {
       "id": "OBL-004-CF1",
@@ -82,8 +83,8 @@
         "mouseLeave",
         "mouseUp"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (83 Lingo scripts, 296 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (83 scripts, 296 LOC)"
     },
     {
       "id": "OBL-005-CF3",
@@ -97,8 +98,8 @@
         "exitFrame",
         "mouseUp"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (49 Lingo scripts, 214 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (49 scripts, 214 LOC)"
     },
     {
       "id": "OBL-006-CFAIDE",
@@ -109,8 +110,8 @@
       "decompiledScripts": 0,
       "decompiledLines": 0,
       "handlers": [],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (0 Lingo scripts, 0 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (0 scripts, 0 LOC)"
     },
     {
       "id": "OBL-007-CFSC",
@@ -123,13 +124,13 @@
       "handlers": [
         "mouseUp"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (4 Lingo scripts, 12 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (4 scripts, 12 LOC)"
     },
     {
       "id": "OBL-008-CRTL",
       "binary": "CRTL.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 17220,
       "sha256": "40db6ad0d35b2bf8f26b66fff275dbabec9f46c24ccfb9c8d58f618cf3125040",
       "decompiledScripts": 8,
@@ -138,8 +139,8 @@
         "exitFrame",
         "mouseUp"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (8 Lingo scripts, 43 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (8 scripts, 43 LOC)"
     },
     {
       "id": "OBL-009-DATA",
@@ -147,11 +148,11 @@
       "type": "Director 6.0 Cast Library (.Cxt/.cst)",
       "sizeBytes": 5605,
       "sha256": "e655420eeea236f9b463c6bab4a9e13d5dc060bcb07c4069892115f80a7b90d4",
-      "decompiledScripts": 2,
+      "decompiledScripts": 1,
       "decompiledLines": 0,
       "handlers": [],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (2 Lingo scripts, 0 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (1 scripts, 0 LOC)"
     },
     {
       "id": "OBL-010-DICMAC",
@@ -162,8 +163,8 @@
       "decompiledScripts": 0,
       "decompiledLines": 0,
       "handlers": [],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (0 Lingo scripts, 0 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (0 scripts, 0 LOC)"
     },
     {
       "id": "OBL-011-DICPC",
@@ -174,8 +175,8 @@
       "decompiledScripts": 0,
       "decompiledLines": 0,
       "handlers": [],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (0 Lingo scripts, 0 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (0 scripts, 0 LOC)"
     },
     {
       "id": "OBL-012-ESP",
@@ -188,8 +189,8 @@
       "handlers": [
         "mouseUp"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (5 Lingo scripts, 12 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (5 scripts, 12 LOC)"
     },
     {
       "id": "OBL-013-FAIDE",
@@ -205,13 +206,13 @@
         "mouseUp",
         "prepareFrame"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (39 Lingo scripts, 342 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (39 scripts, 342 LOC)"
     },
     {
       "id": "OBL-014-FALBUM",
       "binary": "FALBUM.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 10471228,
       "sha256": "82865b6cb64468ca7a515672de760b6769bab6c508d40d46fdd4a6d481781cff",
       "decompiledScripts": 442,
@@ -246,8 +247,8 @@
         "photoallvisible",
         "prepareFrame"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (442 Lingo scripts, 2578 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (442 scripts, 2578 LOC)"
     },
     {
       "id": "OBL-015-FILM",
@@ -258,13 +259,13 @@
       "decompiledScripts": 0,
       "decompiledLines": 0,
       "handlers": [],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (0 Lingo scripts, 0 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (0 scripts, 0 LOC)"
     },
     {
       "id": "OBL-016-FRST",
       "binary": "FRST.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 4739122,
       "sha256": "4a59c53e869a2853e11826fcc699c45b048aa2069383dbc47f3964c839282398",
       "decompiledScripts": 187,
@@ -296,8 +297,8 @@
         "stefG",
         "thejeux"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (187 Lingo scripts, 1737 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (187 scripts, 1737 LOC)"
     },
     {
       "id": "OBL-017-FRSTDATA",
@@ -308,8 +309,8 @@
       "decompiledScripts": 1,
       "decompiledLines": 0,
       "handlers": [],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (1 Lingo scripts, 0 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (1 scripts, 0 LOC)"
     },
     {
       "id": "OBL-018-FTEXTES",
@@ -323,13 +324,13 @@
         "exitFrame",
         "mouseUp"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (5 Lingo scripts, 28 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (5 scripts, 28 LOC)"
     },
     {
       "id": "OBL-019-F_01",
       "binary": "F_01.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 2596270,
       "sha256": "d474cf68d245c29832a3f144676baf889b59b6938cbb200ac69515b33600892e",
       "decompiledScripts": 458,
@@ -362,13 +363,13 @@
         "sonT",
         "sonTV"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (458 Lingo scripts, 2424 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (458 scripts, 2424 LOC)"
     },
     {
       "id": "OBL-020-F_02",
       "binary": "F_02.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 3820500,
       "sha256": "2dec2566480b556d5761f18680d609cfd9d557d4f952c12f5f0ae49443b989fe",
       "decompiledScripts": 373,
@@ -405,13 +406,13 @@
         "gestson",
         "mouseDown"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (373 Lingo scripts, 2760 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (373 scripts, 2760 LOC)"
     },
     {
       "id": "OBL-021-F_03",
       "binary": "F_03.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 2581946,
       "sha256": "019e5a3e8f429b169ac2a70dcb3845db2cb90851830c0e86d2fb5358294832c5",
       "decompiledScripts": 351,
@@ -448,13 +449,13 @@
         "revoir",
         "sonT"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (351 Lingo scripts, 2309 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (351 scripts, 2309 LOC)"
     },
     {
       "id": "OBL-022-F_111",
       "binary": "F_111.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 6704836,
       "sha256": "df701c2fc976ae806c13a27c7f87a1b4a38d6d853717f5994aa0ff4e42618121",
       "decompiledScripts": 501,
@@ -491,13 +492,13 @@
         "sonT",
         "sonTV"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (501 Lingo scripts, 2744 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (501 scripts, 2744 LOC)"
     },
     {
       "id": "OBL-023-F_112",
       "binary": "F_112.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 18885378,
       "sha256": "cdbffc807a619730eafe2446e69bd8fb87e188af65c622c425ba0b6906e4b8cd",
       "decompiledScripts": 350,
@@ -534,13 +535,13 @@
         "keystefup",
         "look"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (350 Lingo scripts, 3245 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (350 scripts, 3245 LOC)"
     },
     {
       "id": "OBL-024-F_113",
       "binary": "F_113.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 6792618,
       "sha256": "17f0b3b5c28421624bea45725306eefaa423be473f2b045c049c900def2d6e54",
       "decompiledScripts": 61,
@@ -551,13 +552,13 @@
         "mouseDown",
         "mouseUp"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (61 Lingo scripts, 376 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (61 scripts, 376 LOC)"
     },
     {
       "id": "OBL-025-F_121",
       "binary": "F_121.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 5597086,
       "sha256": "3c3b59f532f44bfa231026e2a9e4301bbf41ca7e5fdac5d64177b7a287d36369",
       "decompiledScripts": 433,
@@ -589,13 +590,13 @@
         "sonT",
         "sonTV"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (433 Lingo scripts, 2400 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (433 scripts, 2400 LOC)"
     },
     {
       "id": "OBL-026-F_122",
       "binary": "F_122.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 4088364,
       "sha256": "0a8aae5fab1fe9613aeb24869e2f66fcab22f6dbebace80f4baa346a34d55779",
       "decompiledScripts": 273,
@@ -632,13 +633,13 @@
         "gestcursormini",
         "goP"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (273 Lingo scripts, 2980 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (273 scripts, 2980 LOC)"
     },
     {
       "id": "OBL-027-F_131",
       "binary": "F_131.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 6373282,
       "sha256": "89cd737b43385b6d6800fc335bc263073e01df0f739523ec249d4773af98a6e3",
       "decompiledScripts": 364,
@@ -668,13 +669,13 @@
         "sonT",
         "sonTV"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (364 Lingo scripts, 2349 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (364 scripts, 2349 LOC)"
     },
     {
       "id": "OBL-028-F_132",
       "binary": "F_132.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 9977886,
       "sha256": "c937adf45ee33504fe4f105932b42d488221f2656d9d0c98aa1114a9aa838893",
       "decompiledScripts": 130,
@@ -711,13 +712,13 @@
         "jeu4",
         "jeuS1"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (130 Lingo scripts, 3229 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (130 scripts, 3229 LOC)"
     },
     {
       "id": "OBL-029-F_133",
       "binary": "F_133.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 3010706,
       "sha256": "4e506439713b816ff7b072b00b77c7d7cced253778b36f5cac846674af5bfc09",
       "decompiledScripts": 74,
@@ -754,13 +755,13 @@
         "piece2",
         "porteclef"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (74 Lingo scripts, 1855 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (74 scripts, 1855 LOC)"
     },
     {
       "id": "OBL-030-F_134",
       "binary": "F_134.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 270060,
       "sha256": "f4db203ef016b7102333fbf9090665a320464183a11277b10f780c2a1f39e804",
       "decompiledScripts": 6,
@@ -769,13 +770,13 @@
         "exitFrame",
         "prepareMovie"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (6 Lingo scripts, 20 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (6 scripts, 20 LOC)"
     },
     {
       "id": "OBL-031-F_211",
       "binary": "F_211.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 8814194,
       "sha256": "b69f112aaade90514446ce9384e3be41677db93c72bccc9556ba048c265fc4f7",
       "decompiledScripts": 564,
@@ -812,13 +813,13 @@
         "mouseUp",
         "pinceau"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (564 Lingo scripts, 3687 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (564 scripts, 3687 LOC)"
     },
     {
       "id": "OBL-032-F_212",
       "binary": "F_212.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 1958280,
       "sha256": "03848869c62d28961dc83c3d2fe6c6b0aa5cc332f61e6a3a3fd41f4809306a35",
       "decompiledScripts": 83,
@@ -839,13 +840,13 @@
         "puppetchampi",
         "valeur"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (83 Lingo scripts, 750 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (83 scripts, 750 LOC)"
     },
     {
       "id": "OBL-033-F_2122",
       "binary": "F_2122.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 1866164,
       "sha256": "574e36d90b4f353f8230c59c47f19c390e14f94180dc70aedbf048d7defe420e",
       "decompiledScripts": 85,
@@ -866,13 +867,13 @@
         "puppetchampi",
         "valeur"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (85 Lingo scripts, 748 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (85 scripts, 748 LOC)"
     },
     {
       "id": "OBL-034-F_221",
       "binary": "F_221.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 10864860,
       "sha256": "5092bc79e2312d1275f2059f3777f626e621c3ff311b53a0f81c91d1f0e4ef4e",
       "decompiledScripts": 327,
@@ -909,13 +910,13 @@
         "initlistconnaissance",
         "initlistombre"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (327 Lingo scripts, 3926 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (327 scripts, 3926 LOC)"
     },
     {
       "id": "OBL-035-F_231",
       "binary": "F_231.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 7107806,
       "sha256": "29f8f5b88203b5b9c86f31c5e0b2be0fa14c3d52c0aacd01c917c8bb4c47944a",
       "decompiledScripts": 454,
@@ -952,13 +953,13 @@
         "gestson",
         "jeupaint"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (454 Lingo scripts, 3837 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (454 scripts, 3837 LOC)"
     },
     {
       "id": "OBL-036-F_232",
       "binary": "F_232.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 5979048,
       "sha256": "3e83c31f36b30741c2a960b391a218b18e78c05523bc6476bcee32167dc9b1ad",
       "decompiledScripts": 247,
@@ -985,13 +986,13 @@
         "vert",
         "viseur"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (247 Lingo scripts, 1565 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (247 scripts, 1565 LOC)"
     },
     {
       "id": "OBL-037-F_311",
       "binary": "F_311.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 10855504,
       "sha256": "8130831606a831f1a2d7cc48a9294fe7ff9c7406e8d27c570fab268fcea46af5",
       "decompiledScripts": 109,
@@ -1013,13 +1014,13 @@
         "prepareFrame",
         "revoir"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (109 Lingo scripts, 801 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (109 scripts, 801 LOC)"
     },
     {
       "id": "OBL-038-F_312",
       "binary": "F_312.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 9996958,
       "sha256": "27907efa46b946caf659c585380fa9d9967933c66b5fba68e3a289759df74e16",
       "decompiledScripts": 198,
@@ -1044,13 +1045,13 @@
         "prepareFrame",
         "wait"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (198 Lingo scripts, 1575 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (198 scripts, 1575 LOC)"
     },
     {
       "id": "OBL-039-F_321",
       "binary": "F_321.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 7294588,
       "sha256": "6b6facfbc09242bf34cc645711d4b9ba25015cd28abe325d55845c709f32f359",
       "decompiledScripts": 439,
@@ -1087,13 +1088,13 @@
         "sonTV",
         "tournepapy"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (439 Lingo scripts, 3348 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (439 scripts, 3348 LOC)"
     },
     {
       "id": "OBL-040-F_322",
       "binary": "F_322.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 6832430,
       "sha256": "a5cc3f6cd39ae58713d0b360cb7b11ce8c766fbfad3eafec971896071169cce6",
       "decompiledScripts": 298,
@@ -1130,13 +1131,13 @@
         "potar",
         "potar0"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (298 Lingo scripts, 3051 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (298 scripts, 3051 LOC)"
     },
     {
       "id": "OBL-041-F_331",
       "binary": "F_331.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 3404670,
       "sha256": "74d0942308be33d9558c6f713330ccac88f627bd05e8fb8b7b4ea86cedbe9585",
       "decompiledScripts": 366,
@@ -1173,13 +1174,13 @@
         "sonT",
         "sonTV"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (366 Lingo scripts, 2508 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (366 scripts, 2508 LOC)"
     },
     {
       "id": "OBL-042-F_332",
       "binary": "F_332.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 44072296,
       "sha256": "52d29b57713a38a5952acfdd320ef3a573b36657f280cf10ea80a695417b3906",
       "decompiledScripts": 340,
@@ -1216,13 +1217,13 @@
         "gestcursor",
         "gestcursor2"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (340 Lingo scripts, 3059 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (340 scripts, 3059 LOC)"
     },
     {
       "id": "OBL-043-F_FET1",
       "binary": "F_FET1.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 4122178,
       "sha256": "119aeaea99f70f73c4bdda7f53acb4e5eb7af15c59cfb80bad1f05933aea83a0",
       "decompiledScripts": 355,
@@ -1259,13 +1260,13 @@
         "revoir",
         "sonT"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (355 Lingo scripts, 2305 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (355 scripts, 2305 LOC)"
     },
     {
       "id": "OBL-044-F_FET2",
       "binary": "F_FET2.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 4589066,
       "sha256": "5abc31d9e175789be4850ad80e5dff519e7ab37e9799e88de0924f23149c4268",
       "decompiledScripts": 52,
@@ -1283,13 +1284,13 @@
         "potar",
         "prepareFrame"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (52 Lingo scripts, 375 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (52 scripts, 375 LOC)"
     },
     {
       "id": "OBL-045-F_SC1",
       "binary": "F_SC1.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 820330,
       "sha256": "e60b20fa99b3465f3948712aeffac205a2d6e62db093924109a25b368da61ccb",
       "decompiledScripts": 204,
@@ -1325,13 +1326,13 @@
         "tourne",
         "upmanche"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (204 Lingo scripts, 1536 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (204 scripts, 1536 LOC)"
     },
     {
       "id": "OBL-046-F_SC2",
       "binary": "F_SC2.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 810982,
       "sha256": "d6c36e9cded3139f30f811634760051a96225f091e7756a4e13818a8683ddb17",
       "decompiledScripts": 196,
@@ -1366,13 +1367,13 @@
         "tourne",
         "upmanche"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (196 Lingo scripts, 1323 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (196 scripts, 1323 LOC)"
     },
     {
       "id": "OBL-047-F_SC3",
       "binary": "F_SC3.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 846352,
       "sha256": "1d29d63d5cb2808eac5efa6b1e2c841a19c909011bcbdcbd528b76d9f86d8a79",
       "decompiledScripts": 196,
@@ -1408,13 +1409,13 @@
         "tourne",
         "upmanche"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (196 Lingo scripts, 1498 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (196 scripts, 1498 LOC)"
     },
     {
       "id": "OBL-048-GENEFIN",
       "binary": "GENEFIN.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 3640772,
       "sha256": "995bebb888bbde10fb30ca33e6116f98f8e565cca64ce73f1683b7d4fef5805e",
       "decompiledScripts": 58,
@@ -1426,8 +1427,8 @@
         "mouseLeave",
         "mouseUp"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (58 Lingo scripts, 350 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (58 scripts, 350 LOC)"
     },
     {
       "id": "OBL-049-IF1",
@@ -1438,8 +1439,8 @@
       "decompiledScripts": 0,
       "decompiledLines": 0,
       "handlers": [],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (0 Lingo scripts, 0 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (0 scripts, 0 LOC)"
     },
     {
       "id": "OBL-050-IF2",
@@ -1454,8 +1455,8 @@
         "mouseUp",
         "prepareFrame"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (3 Lingo scripts, 13 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (3 scripts, 13 LOC)"
     },
     {
       "id": "OBL-051-IF22",
@@ -1470,8 +1471,8 @@
         "mouseUp",
         "prepareFrame"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (2 Lingo scripts, 13 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (2 scripts, 13 LOC)"
     },
     {
       "id": "OBL-052-IF3",
@@ -1484,13 +1485,13 @@
       "handlers": [
         "exitFrame"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (3 Lingo scripts, 4 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (3 scripts, 4 LOC)"
     },
     {
       "id": "OBL-053-INSTPC",
       "binary": "INSTPC.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 130860,
       "sha256": "c2ba222baf6d39ae5aace0de451524fba25f26f6a913a8b537237a6e9cd1527e",
       "decompiledScripts": 25,
@@ -1505,8 +1506,8 @@
         "son",
         "visible"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (25 Lingo scripts, 281 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (25 scripts, 281 LOC)"
     },
     {
       "id": "OBL-054-INTER",
@@ -1514,39 +1515,35 @@
       "type": "Director 6.0 Cast Library (.Cxt/.cst)",
       "sizeBytes": 1241358,
       "sha256": "0b162bb44ddca2075758a475725c5bba3b35bc2b216c56b93c7322409d75f68a",
-      "decompiledScripts": 78,
-      "decompiledLines": 404,
+      "decompiledScripts": 49,
+      "decompiledLines": 237,
       "handlers": [
         "beginSprite",
         "enterFrame",
         "exitFrame",
-        "gestcursor",
-        "mouseLeave",
         "mouseUp",
         "prepareFrame"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (78 Lingo scripts, 404 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (49 scripts, 237 LOC)"
     },
     {
       "id": "OBL-055-INTER",
       "binary": "INTER.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 1527368,
       "sha256": "8924cd232ab86287eeb9125acb5623b3942e4b31185d4c916105af489c2b4266",
-      "decompiledScripts": 78,
-      "decompiledLines": 404,
+      "decompiledScripts": 29,
+      "decompiledLines": 167,
       "handlers": [
-        "beginSprite",
         "enterFrame",
         "exitFrame",
         "gestcursor",
         "mouseLeave",
-        "mouseUp",
-        "prepareFrame"
+        "mouseUp"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (78 Lingo scripts, 404 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (29 scripts, 167 LOC)"
     },
     {
       "id": "OBL-056-LINGOF",
@@ -1565,8 +1562,8 @@
         "transitionD",
         "transitionG"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (35 Lingo scripts, 354 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (35 scripts, 354 LOC)"
     },
     {
       "id": "OBL-057-MEC",
@@ -1577,8 +1574,8 @@
       "decompiledScripts": 0,
       "decompiledLines": 0,
       "handlers": [],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (0 Lingo scripts, 0 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (0 scripts, 0 LOC)"
     },
     {
       "id": "OBL-058-MUSIC2",
@@ -1594,8 +1591,8 @@
         "mouseUp",
         "prepareFrame"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (52 Lingo scripts, 476 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (52 scripts, 476 LOC)"
     },
     {
       "id": "OBL-059-P&AF",
@@ -1614,8 +1611,8 @@
         "transitionA",
         "upphoto"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (17 Lingo scripts, 111 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (17 scripts, 111 LOC)"
     },
     {
       "id": "OBL-060-PAF3",
@@ -1632,8 +1629,8 @@
         "mouseUp",
         "upphoto"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (9 Lingo scripts, 81 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (9 scripts, 81 LOC)"
     },
     {
       "id": "OBL-061-PF1",
@@ -1652,8 +1649,8 @@
         "mouseUp",
         "upphoto"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (13 Lingo scripts, 113 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (13 scripts, 113 LOC)"
     },
     {
       "id": "OBL-062-PFSC",
@@ -1670,8 +1667,8 @@
         "mouseUp",
         "upphoto"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (8 Lingo scripts, 65 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (8 scripts, 65 LOC)"
     },
     {
       "id": "OBL-063-PHOTOS",
@@ -1682,13 +1679,13 @@
       "decompiledScripts": 0,
       "decompiledLines": 0,
       "handlers": [],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (0 Lingo scripts, 0 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (0 scripts, 0 LOC)"
     },
     {
       "id": "OBL-064-QUIT",
       "binary": "QUIT.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 48288,
       "sha256": "a4f5ef554be0f88bbfa126461e82fa46f9fc2d061bbae6c71908ff9ecd39d921",
       "decompiledScripts": 8,
@@ -1702,13 +1699,13 @@
         "mouseUp",
         "startMovie"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (8 Lingo scripts, 110 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (8 scripts, 110 LOC)"
     },
     {
       "id": "OBL-065-SAMPRES",
       "binary": "SAMPRES.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 2669992,
       "sha256": "8751a06b7ef6992ad53f39ee273ca3805e6ff4c49f782f78d8996f8b1fb314f8",
       "decompiledScripts": 39,
@@ -1726,11 +1723,54 @@
         "mouseUp",
         "prepareFrame"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (39 Lingo scripts, 306 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (39 scripts, 306 LOC)"
     },
     {
-      "id": "OBL-066-SON",
+      "id": "OBL-066-SHARED",
+      "binary": "SHARED.CXT",
+      "type": "Director 6.0 Cast Library (.Cxt/.cst)",
+      "sizeBytes": 656102,
+      "sha256": "cc4651006cbbd6a1fef7ed88db30fe1f107d6437d9b8d12c32315a34ebe1705c",
+      "decompiledScripts": 177,
+      "decompiledLines": 3455,
+      "handlers": [
+        "AIDEAIDE",
+        "ALBUM",
+        "ANIM",
+        "BACK",
+        "BOITE",
+        "C0",
+        "CAA",
+        "CAA2",
+        "CAAAide",
+        "CAE",
+        "CBackD",
+        "CDD",
+        "CG",
+        "CGG",
+        "CI",
+        "CNA",
+        "CNE",
+        "CNE2",
+        "CNEAide",
+        "CPOLA",
+        "CbackG",
+        "Cbas",
+        "Cd",
+        "Cdevant",
+        "Cf",
+        "Ch",
+        "Cmain",
+        "Couvert",
+        "Cphoto",
+        "CphotoA"
+      ],
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (177 scripts, 3455 LOC)"
+    },
+    {
+      "id": "OBL-067-SON",
       "binary": "SON.Cxt",
       "type": "Director 6.0 Cast Library (.Cxt/.cst)",
       "sizeBytes": 11335504,
@@ -1741,11 +1781,11 @@
         "exitFrame",
         "mouseUp"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (27 Lingo scripts, 135 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (27 scripts, 135 LOC)"
     },
     {
-      "id": "OBL-067-SONGS",
+      "id": "OBL-068-SONGS",
       "binary": "SONGS.Cxt",
       "type": "Director 6.0 Cast Library (.Cxt/.cst)",
       "sizeBytes": 20151892,
@@ -1755,11 +1795,11 @@
       "handlers": [
         "exitFrame"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (5 Lingo scripts, 7 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (5 scripts, 7 LOC)"
     },
     {
-      "id": "OBL-068-SONFORET",
+      "id": "OBL-069-SONFORET",
       "binary": "SONforet.Cxt",
       "type": "Director 6.0 Cast Library (.Cxt/.cst)",
       "sizeBytes": 4536464,
@@ -1770,13 +1810,13 @@
         "exitFrame",
         "mouseUp"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (10 Lingo scripts, 42 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (10 scripts, 42 LOC)"
     },
     {
-      "id": "OBL-069-STARTER",
+      "id": "OBL-070-STARTER",
       "binary": "STARTER.Dxr",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 15685,
       "sha256": "c7687d9db217a83597dd97b4f807bf1c382c64b0f03be092e63d825968c1c8ca",
       "decompiledScripts": 8,
@@ -1786,11 +1826,11 @@
         "exitFrame",
         "verifieCDmac"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (8 Lingo scripts, 95 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (8 scripts, 95 LOC)"
     },
     {
-      "id": "OBL-070-TC2",
+      "id": "OBL-071-TC2",
       "binary": "TC2.Cxt",
       "type": "Director 6.0 Cast Library (.Cxt/.cst)",
       "sizeBytes": 16721,
@@ -1798,11 +1838,11 @@
       "decompiledScripts": 0,
       "decompiledLines": 0,
       "handlers": [],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (0 Lingo scripts, 0 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (0 scripts, 0 LOC)"
     },
     {
-      "id": "OBL-071-TCOM",
+      "id": "OBL-072-TCOM",
       "binary": "TCOM.Cxt",
       "type": "Director 6.0 Cast Library (.Cxt/.cst)",
       "sizeBytes": 346186,
@@ -1812,11 +1852,11 @@
       "handlers": [
         "exitFrame"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (3 Lingo scripts, 12 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (3 scripts, 12 LOC)"
     },
     {
-      "id": "OBL-072-TSC",
+      "id": "OBL-073-TSC",
       "binary": "TSC.Cxt",
       "type": "Director 6.0 Cast Library (.Cxt/.cst)",
       "sizeBytes": 4698336,
@@ -1827,11 +1867,11 @@
         "exitFrame",
         "mouseUp"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (5 Lingo scripts, 25 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (5 scripts, 25 LOC)"
     },
     {
-      "id": "OBL-073-ALBUM",
+      "id": "OBL-074-ALBUM",
       "binary": "album.Cxt",
       "type": "Director 6.0 Cast Library (.Cxt/.cst)",
       "sizeBytes": 1436558,
@@ -1843,11 +1883,11 @@
         "mouseLeave",
         "mouseUp"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (16 Lingo scripts, 74 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (16 scripts, 74 LOC)"
     },
     {
-      "id": "OBL-074-COM",
+      "id": "OBL-075-COM",
       "binary": "com.Cxt",
       "type": "Director 6.0 Cast Library (.Cxt/.cst)",
       "sizeBytes": 569620,
@@ -1858,11 +1898,11 @@
         "exitFrame",
         "mouseUp"
       ],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (8 Lingo scripts, 44 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (8 scripts, 44 LOC)"
     },
     {
-      "id": "OBL-075-CURSEUR",
+      "id": "OBL-076-CURSEUR",
       "binary": "curseur.Cxt",
       "type": "Director 6.0 Cast Library (.Cxt/.cst)",
       "sizeBytes": 11265,
@@ -1870,32 +1910,44 @@
       "decompiledScripts": 0,
       "decompiledLines": 0,
       "handlers": [],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (0 Lingo scripts, 0 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (0 scripts, 0 LOC)"
     },
     {
-      "id": "OBL-076-DATA",
+      "id": "OBL-077-SON",
+      "binary": "SON.cxt",
+      "type": "Director 6.0 Cast Library (.Cxt/.cst)",
+      "sizeBytes": 11335486,
+      "sha256": "9c8f2b8a93e95d20dd0d0c8e892c789228150417aae68dd0ab5cd845a60c01ff",
+      "decompiledScripts": 0,
+      "decompiledLines": 0,
+      "handlers": [],
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (0 scripts, 0 LOC)"
+    },
+    {
+      "id": "OBL-078-DATA",
       "binary": "data.cst",
       "type": "Director 6.0 Cast Library (.Cxt/.cst)",
       "sizeBytes": 12824,
       "sha256": "4066f6d9f8ee0fc7e831b2600a8d0103730dfc109ed3ee734cd9f9dc869c3b52",
-      "decompiledScripts": 2,
+      "decompiledScripts": 1,
       "decompiledLines": 0,
       "handlers": [],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (2 Lingo scripts, 0 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (1 scripts, 0 LOC)"
     },
     {
-      "id": "OBL-077-STARTERPC",
+      "id": "OBL-079-STARTERPC",
       "binary": "STARTERPC.DIR",
-      "type": "Director 6.0 Movie (.Dxr)",
+      "type": "Director 6.0 Movie (.Dxr/.Dir)",
       "sizeBytes": 20946,
       "sha256": "17c0a111adc285cb1321b23da3e6950216eb49ce1e82ee596d571aa5d4f261b0",
       "decompiledScripts": 0,
       "decompiledLines": 0,
       "handlers": [],
-      "status": "PROVED_EQUIVALENT",
-      "evidence": "Decompiled via ProjectorRays + RIFX Score/Cast extractor (0 Lingo scripts, 0 LOC)"
+      "status": "EXTRACTED_DECOMPILED",
+      "evidence": "RIFX chunks extracted + Lingo bytecode decompiled via ProjectorRays (0 scripts, 0 LOC)"
     }
   ]
 }
