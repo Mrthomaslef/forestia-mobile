@@ -2,689 +2,345 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Forestia" />
-  <meta name="theme-color" content="#05130a" />
-  <title>Forestia (1998) — Édition Web Universelle (REA + ProjectorRays)</title>
+  <meta name="theme-color" content="#030905" />
+  <title>Forestia (1998) — Moteur ScummVM Director (Mac)</title>
   <link rel="icon" type="image/svg+xml" href="assets/icon.svg" />
   <link rel="apple-touch-icon" href="assets/icon.svg" />
   <link rel="manifest" href="manifest.json" />
   <style>
     :root {
-      --bg-deep: #040d07;
-      --bg-panel: rgba(9, 25, 15, 0.92);
-      --border-green: rgba(74, 222, 128, 0.26);
+      --bg-void: #030905;
+      --card-bg: rgba(9, 26, 15, 0.9);
+      --border-green: rgba(74, 222, 128, 0.28);
       --accent: #22c55e;
-      --accent-gold: #facc15;
       --text-main: #ecfdf5;
       --text-muted: #86efac;
     }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    body {
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
       margin: 0;
-      min-height: 100vh;
+      padding: 0;
+      min-height: 100dvh;
+      width: 100%;
+      overflow-x: hidden;
+      background: radial-gradient(circle at 50% 35%, #0e2917 0%, var(--bg-void) 72%);
+      color: var(--text-main);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: radial-gradient(circle at 50% 0%, #12331d 0%, #040d07 72%);
-      color: var(--text-main);
-      padding: max(10px, env(safe-area-inset-top)) 12px max(24px, env(safe-area-inset-bottom));
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .app-shell {
-      width: 100%;
-      max-width: 1060px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    /* Top Header & Quick Mode Bar */
-    .top-header {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      background: var(--bg-panel);
-      border: 1px solid var(--border-green);
-      border-radius: 14px;
-      padding: 8px 14px;
-    }
-    .brand-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .brand-row img {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-    }
-    .brand-title h1 {
-      margin: 0;
-      font-size: 18px;
-      letter-spacing: -0.02em;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .rea-badge {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 999px;
-      background: rgba(250, 204, 21, 0.16);
-      color: var(--accent-gold);
-      border: 1px solid rgba(250, 204, 21, 0.4);
-    }
-    .brand-title p {
-      margin: 1px 0 0;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-    .header-right {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-    }
-    #profile-summary {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 5px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    /* Navigation Pills Bar */
-    .nav-pills-bar {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 6px;
-      background: var(--bg-panel);
-      border: 1px solid var(--border-green);
-      border-radius: 12px;
-      padding: 7px 10px;
-    }
-    .top-nav-pill, .tool-btn {
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--text-main);
-      border-radius: 9px;
-      padding: 6px 10px;
-      font-size: 12.5px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    .top-nav-pill:hover, .tool-btn:hover {
-      background: rgba(34, 197, 94, 0.22);
-      border-color: rgba(74, 222, 128, 0.5);
-    }
-    .top-nav-pill.active, .tool-btn.active {
-      background: var(--accent);
-      color: #04240f;
-      border-color: var(--accent);
-    }
-    .nav-select {
-      background: rgba(0, 0, 0, 0.45);
-      color: var(--text-main);
-      border: 1px solid var(--border-green);
-      border-radius: 9px;
-      padding: 5px 8px;
-      font-size: 12px;
-      max-width: 215px;
-    }
-
-    /* 640x480 Director 6 Stage Container */
-    #stage-container {
-      position: relative;
-      width: 100%;
-      max-width: 820px;
-      margin: 0 auto;
-      aspect-ratio: 4 / 3;
-      background: #000;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 2px solid rgba(74, 222, 128, 0.35);
-      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.78);
-    }
-    #stage-canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-      cursor: pointer;
+      overscroll-behavior-y: contain;
       touch-action: manipulation;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: max(16px, env(safe-area-inset-top)) 16px max(28px, calc(env(safe-area-inset-bottom) + 16px));
     }
 
-    /* Toast notification inside stage */
-    #stage-toast {
-      position: absolute;
-      bottom: 16px;
+    /* Pull-to-Refresh: circular SVG arrow ONLY, zero text */
+    #ptr-indicator {
+      position: fixed;
+      top: max(12px, env(safe-area-inset-top));
       left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      background: rgba(6, 28, 14, 0.94);
-      border: 1px solid var(--accent-gold);
-      color: #fef08a;
-      padding: 8px 16px;
+      transform: translate(-50%, -24px);
+      width: 34px;
+      height: 34px;
       border-radius: 999px;
-      font-size: 13.5px;
-      font-weight: 600;
-      pointer-events: none;
+      background: rgba(9, 28, 16, 0.94);
+      border: 1px solid var(--border-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       opacity: 0;
-      transition: all 0.25s ease;
-      z-index: 25;
-      text-align: center;
-      max-width: 90%;
+      pointer-events: none;
+      z-index: 50;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+      transition: opacity 0.15s ease;
     }
-    #stage-toast.visible {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
+    #ptr-indicator svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    #ptr-indicator.spinning svg {
+      animation: spin 0.65s linear infinite;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
 
-    /* Interactive Overlay Panel (Album / Episodes / Profiles) */
-    #stage-overlay-panel {
+    .boot-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      max-width: 380px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .emblem-wrap {
+      position: relative;
+      width: 78px;
+      height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .emblem-wrap img {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
+    }
+    .ring {
       position: absolute;
       inset: 0;
-      z-index: 20;
-      display: flex;
-      flex-direction: column;
-      pointer-events: none;
+      border-radius: 22px;
+      border: 2px solid rgba(34, 197, 94, 0.25);
+      border-top-color: var(--accent);
+      animation: spin 1.1s linear infinite;
     }
-    #stage-overlay-panel.hidden {
+
+    .status-line {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .fallback-box {
       display: none;
-    }
-    .album-modal-shell {
-      pointer-events: auto;
-      margin: auto;
-      width: 95%;
-      height: 93%;
-      background: rgba(8, 22, 13, 0.95);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(74, 222, 128, 0.4);
-      border-radius: 14px;
-      display: flex;
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border-green);
+      border-radius: 16px;
+      padding: 16px;
       flex-direction: column;
-      overflow: hidden;
-    }
-    .album-nav-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 12px;
-      background: rgba(0, 0, 0, 0.45);
-      border-bottom: 1px solid rgba(74, 222, 128, 0.22);
-    }
-    .album-tab-btn {
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--text-main);
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .album-tab-btn.active {
-      background: var(--accent-gold);
-      color: #1f1600;
-      border-color: var(--accent-gold);
-    }
-    .album-tab-btn.close-btn {
-      margin-left: auto;
-      background: rgba(239, 68, 68, 0.2);
-      border-color: rgba(239, 68, 68, 0.45);
-      color: #fecaca;
-    }
-    .album-modal-content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 12px;
-    }
-    .album-grid-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 10px;
-    }
-    .album-feature-card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(74, 222, 128, 0.25);
-      border-radius: 12px;
-      padding: 14px;
-      cursor: pointer;
-      transition: transform 0.15s ease, border-color 0.15s ease;
-    }
-    .album-feature-card:hover {
-      transform: translateY(-2px);
-      border-color: var(--accent-gold);
-    }
-    .album-card-icon { font-size: 28px; margin-bottom: 6px; }
-    .album-feature-card h3 { margin: 0 0 4px; font-size: 15px; color: var(--accent-gold); }
-    .album-feature-card p { margin: 0; font-size: 12.5px; color: var(--text-muted); line-height: 1.4; }
-
-    .album-split {
-      display: grid;
-      grid-template-columns: 210px 1fr;
       gap: 12px;
-      height: 100%;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.55);
     }
-    @media (max-width: 640px) {
-      .album-split { grid-template-columns: 1fr; }
-    }
-    .album-sidebar-list {
-      max-height: 360px;
-      overflow-y: auto;
+    .fallback-box.visible {
       display: flex;
-      flex-direction: column;
-      gap: 4px;
-      padding-right: 4px;
     }
-    .album-list-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      text-align: left;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: var(--text-main);
-      padding: 6px 9px;
-      border-radius: 7px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-    .album-list-item.active {
-      background: rgba(34, 197, 94, 0.28);
-      border-color: var(--accent);
-      font-weight: 700;
-    }
-    .album-detail-pane {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .album-detail-header {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-    }
-    .album-detail-header h3 { margin: 0; font-size: 18px; color: var(--accent-gold); }
-    .badge-pill {
-      display: inline-block;
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: rgba(34, 197, 94, 0.2);
-      color: var(--text-muted);
-    }
-    .album-polaroid-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      align-items: flex-start;
-    }
-    .polaroid-img {
-      width: 190px;
-      max-width: 100%;
-      border-radius: 10px;
-      background: #f8fafc;
-      padding: 6px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-    }
-    .herbier-img {
-      background: rgba(254, 243, 199, 0.92);
-    }
-    .album-text-box {
-      flex: 1;
-      min-width: 200px;
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      padding: 12px;
+    .fallback-box p {
+      margin: 0;
       font-size: 13px;
-      line-height: 1.55;
-      color: #e2e8f0;
+      line-height: 1.45;
+      color: #d1fae5;
     }
-    .esp-full-viewer {
-      display: flex;
-      flex-direction: column;
+    .lan-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       gap: 8px;
-      align-items: center;
-    }
-    .esp-toolbar {
-      width: 100%;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      font-size: 12.5px;
-    }
-    .esp-spread-img {
-      width: 100%;
-      max-width: 580px;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    .dico-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-      gap: 10px;
-    }
-    .dico-card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(74, 222, 128, 0.2);
-      border-radius: 10px;
-      padding: 10px 12px;
-    }
-    .dico-card h4 { margin: 0 0 5px; font-size: 14px; color: var(--accent-gold); }
-    .dico-card p { margin: 0 0 8px; font-size: 12px; color: #cbd5e1; line-height: 1.45; }
-
-    /* Episode Bottom HUD Bar */
-    .episode-hud-bar {
-      pointer-events: auto;
-      margin-top: auto;
-      background: rgba(5, 18, 10, 0.92);
-      border-top: 1px solid rgba(74, 222, 128, 0.4);
-      padding: 8px 12px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-    }
-    .episode-hud-info {
-      display: flex;
-      flex-direction: column;
-      font-size: 12px;
-    }
-    .episode-hud-info strong { color: var(--accent-gold); font-size: 13px; }
-    .episode-hud-controls { display: flex; flex-wrap: wrap; gap: 6px; }
-
-    .btn-chip {
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--text-main);
-      padding: 5px 10px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .btn-chip.primary {
-      background: var(--accent);
-      color: #04240f;
-      border-color: var(--accent);
-    }
-
-    /* Profile Modal */
-    .profile-list-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 14px;
-    }
-    .profile-card {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-    }
-    .profile-card.active {
-      border-color: var(--accent);
-      background: rgba(34, 197, 94, 0.14);
-    }
-    .profile-card h4 { margin: 0 0 3px; font-size: 14px; color: var(--accent-gold); }
-    .profile-card p { margin: 0; font-size: 12px; color: var(--text-muted); }
-    .profile-card-btns { display: flex; gap: 6px; }
-    .new-profile-box {
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid var(--border-green);
-      border-radius: 10px;
-      padding: 12px;
-    }
-    .new-profile-box h4 { margin: 0 0 8px; font-size: 14px; }
-    .new-profile-row { display: flex; flex-wrap: wrap; gap: 8px; }
-    .new-profile-row input, .new-profile-row select {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #fff;
-      padding: 7px 10px;
-      border-radius: 8px;
-      font-size: 13px;
-    }
-    .new-profile-row input { flex: 1; min-width: 180px; }
-
-    /* Diplome */
-    .diplome-card {
-      position: relative;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-    .diplome-bg {
-      width: 100%;
-      max-width: 500px;
-      border-radius: 10px;
-      border: 2px solid var(--accent-gold);
-    }
-    .diplome-overlay-text h3 { margin: 4px 0; color: var(--accent-gold); }
-    .diplome-overlay-text p { margin: 3px 0; font-size: 13px; }
-    .diplome-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 8px; }
-
-    /* Status & Director Telemetry Bar */
-    .telemetry-bar {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      background: var(--bg-panel);
-      border: 1px solid var(--border-green);
-      border-radius: 11px;
-      padding: 7px 12px;
-      font-size: 12.5px;
-      color: var(--text-muted);
-    }
-    .telemetry-bar code {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fef08a;
-      padding: 1px 6px;
-      border-radius: 5px;
-    }
-
-    /* REA & ProjectorRays Decompilation Inspector Accordion */
-    details.inspector-Accordion {
-      background: var(--bg-panel);
-      border: 1px solid var(--border-green);
+      height: 44px;
+      padding: 0 18px;
       border-radius: 12px;
-      padding: 10px 14px;
-      font-size: 13px;
+      background: rgba(34, 197, 94, 0.18);
+      border: 1px solid rgba(74, 222, 128, 0.45);
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      touch-action: manipulation;
+      transition: background 0.15s ease;
     }
-    details.inspector-Accordion summary {
-      cursor: pointer;
-      font-weight: 700;
-      color: var(--accent-gold);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .lan-cta:hover {
+      background: rgba(34, 197, 94, 0.28);
     }
-    .inspector-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 12px;
-    }
-    @media (max-width: 780px) {
-      .inspector-grid { grid-template-columns: 1fr; }
-    }
-    .ledger-table-wrap {
-      max-height: 270px;
-      overflow-y: auto;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-    }
-    table.ledger-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 11.5px;
-    }
-    table.ledger-table th, table.ledger-table td {
-      padding: 6px 8px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-      text-align: left;
-    }
-    table.ledger-table th {
-      background: rgba(0, 0, 0, 0.5);
-      position: sticky;
-      top: 0;
-      color: var(--text-muted);
-    }
-    .status-proved {
-      color: #4ade80;
-      font-weight: 700;
-    }
-    pre.code-box {
-      background: #020804;
-      border: 1px solid rgba(74, 222, 128, 0.25);
-      border-radius: 8px;
-      padding: 10px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: 11.5px;
-      color: #a7f3d0;
-      max-height: 240px;
-      overflow: auto;
-      margin: 8px 0 0;
-      white-space: pre-wrap;
+    .lan-cta svg {
+      width: 17px;
+      height: 17px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
   </style>
 </head>
 <body>
-  <div class="app-shell">
-    <!-- Top Header -->
-    <header class="top-header">
-      <div class="brand-row">
-        <img src="assets/icon.svg" alt="Forestia" />
-        <div class="brand-title">
-          <h1>
-            Forestia (1998)
-            <span class="rea-badge">Moteur Web Universel · REA + ProjectorRays</span>
-          </h1>
-          <p>100% autonome dans le navigateur (iPhone, iPad, Android, Mac, PC) — Sans DOSBox ni Windows 98</p>
-        </div>
-      </div>
-      <div class="header-right">
-        <span id="profile-summary">👤 Chargement...</span>
-        <button class="tool-btn" id="btn-profiles">👤 Profils</button>
-        <button class="tool-btn" id="btn-toggle-mute">🔊 Son</button>
-        <button class="tool-btn" id="btn-fullscreen">⛶ Plein écran</button>
-      </div>
-    </header>
-
-    <!-- Navigation & Tools Bar -->
-    <nav class="nav-pills-bar" aria-label="Navigation Forestia">
-      <button class="top-nav-pill active" id="nav-btn-menu">🏠 Menu (FRST)</button>
-      <button class="top-nav-pill" id="nav-btn-sampres">🐰 Sam & Papy Chêne</button>
-      <button class="top-nav-pill" id="nav-btn-matin">🌅 Matin (F_01)</button>
-      <button class="top-nav-pill" id="nav-btn-midi">☀️ Midi (F_02)</button>
-      <button class="top-nav-pill" id="nav-btn-soir">🌙 Nuit (F_03)</button>
-      <button class="top-nav-pill" id="nav-btn-tour">🔭 Tour 360° VR</button>
-      <button class="top-nav-pill" id="nav-btn-scierie">🪚 Scierie</button>
-      <button class="top-nav-pill" id="nav-btn-fete">🎉 Grande Fête</button>
-      <button class="top-nav-pill" id="nav-btn-album">📒 Album & Herbier</button>
-
-      <select id="episode-quick-select" class="nav-select" aria-label="Choisir un épisode">
-        <option value="">🎮 Les 9 Épisodes / Boîte à Jeux...</option>
-        <option value="1">1. La Fourmilière & L'Agent Secret (F_111)</option>
-        <option value="2">2. Le Cheval à Bascule & Peinture (F_122)</option>
-        <option value="3">3. La Danse des Abeilles (F_132)</option>
-        <option value="4">4. Les Champignons Enchantés (F_212)</option>
-        <option value="5">5. La Course des Petits Nuages (F_221)</option>
-        <option value="6">6. Le Barrage des Castors (F_231)</option>
-        <option value="7">7. Le Livre de la Nuit (F_312)</option>
-        <option value="8">8. La Fête de la Musique (F_322)</option>
-        <option value="9">9. La Montagne de Feu — Morhùrl (F_332)</option>
-      </select>
-
-      <select id="forest-node-select" class="nav-select" aria-label="Téléportation forêt">
-        <option value="">🌲 Téléportation (640 scènes)...</option>
-      </select>
-
-      <button class="tool-btn" id="btn-camera-mode" title="Raccourci : touche P">📸 Appareil Photo</button>
-      <button class="tool-btn" id="btn-map-mode" title="Raccourci : touche M">🗺️ Carte</button>
-      <button class="tool-btn" id="btn-toggle-hotspots" title="Afficher les zones cliquables Director 6">🎯 Zones</button>
-    </nav>
-
-    <!-- 640x480 Director 6 Stage -->
-    <div id="stage-container">
-      <canvas id="stage-canvas" width="640" height="480"></canvas>
-      <div id="stage-overlay-panel" class="hidden"></div>
-      <div id="stage-toast"></div>
-    </div>
-
-    <!-- Telemetry & Status Bar -->
-    <div class="telemetry-bar">
-      <span id="status-text">Initialisation du moteur Director 6.0 Web...</span>
-      <span id="director-telemetry">🎬 <code>FRST.Dxr</code> · Label <code>sommaire</code> · Frame <code>17</code></span>
-    </div>
-
-    <!-- REA Obligation Ledger & Decompiled Lingo Inspector -->
-    <details class="inspector-Accordion">
-      <summary>
-        <span>🔬 Inspecteur Binaire Director 6 & Code Source Lingo Décompilé (79 binaires · 9 424 scripts · 74 832 lignes · 640/640 nœuds interactifs)</span>
-        <span style="font-size:12px;color:var(--text-muted)">Cliquer pour déplier ▾</span>
-      </summary>
-      <div class="inspector-grid">
-        <div>
-          <h4 style="margin:0 0 6px;color:var(--accent-gold)">Inventaire d'Extraction & Décompilation (`recomp/obligation_ledger.json`)</h4>
-          <div class="ledger-table-wrap">
-            <table class="ledger-table">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Binaire</th>
-                  <th>Type</th>
-                  <th>Taille</th>
-                  <th>Scripts Lingo</th>
-                  <th>Statut</th>
-                </tr>
-              </thead>
-              <tbody id="rea-ledger-tbody"></tbody>
-            </table>
-          </div>
-          <div style="margin-top:10px;font-size:12px;">
-            <label for="local-binary-input"><strong>Lecteur Binaire RIFX / ISO9660 local :</strong> Charger un fichier <code>.Dxr</code>, <code>.Cxt</code> ou <code>FORESTIA.BIN</code> :</label>
-            <input type="file" id="local-binary-input" accept=".dxr,.cxt,.cst,.dir,.bin,.iso,.exe" style="margin-top:4px;font-size:12px;" />
-            <pre id="binary-inspector-output" class="code-box" style="max-height:95px;">Aucun fichier externe chargé — utilisation du bundle Web intégré (web_assets/).</pre>
-          </div>
-        </div>
-        <div>
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
-            <h4 style="margin:0;color:var(--accent-gold)">Explorateur de Scripts Lingo Décompilés (`ProjectorRays`)</h4>
-          </div>
-          <select id="lingo-script-select" class="nav-select" style="width:100%;max-width:100%;margin-top:6px;"></select>
-          <pre id="lingo-code-preview" class="code-box"></pre>
-          <p style="margin:8px 0 0;font-size:12px;color:var(--text-muted)">
-            💡 Besoin du mode streaming Mac Moonlight ou WebRTC legacy ?
-            <a href="web.html" style="color:var(--accent-gold)">Ouvrir le lecteur hybride / Moonlight (`web.html`)</a>
-          </p>
-        </div>
-      </div>
-    </details>
+  <div id="ptr-indicator" aria-hidden="true">
+    <svg viewBox="0 0 24 24">
+      <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+      <polyline points="21 3 21 9 15 9" />
+    </svg>
   </div>
 
-  <script src="forestia_web.js?v=20261109"></script>
+  <main class="boot-center">
+    <div class="emblem-wrap">
+      <div class="ring"></div>
+      <img src="assets/icon.svg" alt="Forestia" />
+    </div>
+    <p class="status-line" id="status-line">Ouverture directe de Forestia…</p>
+
+    <div class="fallback-box" id="fallback-box">
+      <p id="fallback-msg">En attente du serveur ScummVM hébergé sur le Mac… Nouvel essai automatique toutes les 3 secondes.</p>
+      <a class="lan-cta" id="lan-link" href="http://192.168.1.111:8791/">
+        <svg viewBox="0 0 24 24">
+          <path d="M5 12.55a11 11 0 0 1 14.08 0" />
+          <path d="M1.42 9a16 16 0 0 1 21.16 0" />
+          <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
+          <circle cx="12" cy="20" r="1" fill="currentColor" />
+        </svg>
+        <span>Ouvrir sur le Wi-Fi local (Mac)</span>
+      </a>
+    </div>
+  </main>
+
+  <script src="endpoint.js"></script>
+  <script>
+    (function () {
+      const CACHE_KEY = "forestia-scummvm-mac-v1";
+      try {
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.getRegistrations().then((regs) => {
+            regs.forEach((r) => r.unregister());
+          });
+        }
+        if (localStorage.getItem("forestia_cache_key") !== CACHE_KEY && "caches" in window) {
+          caches.keys().then((keys) => keys.forEach((k) => caches.delete(k)));
+          localStorage.setItem("forestia_cache_key", CACHE_KEY);
+        }
+      } catch (_) {}
+
+      const statusLine = document.getElementById("status-line");
+      const fallbackBox = document.getElementById("fallback-box");
+      const lanLink = document.getElementById("lan-link");
+
+      async function probeHealth(baseUrl, timeoutMs) {
+        if (!baseUrl) return false;
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), timeoutMs);
+        try {
+          const res = await fetch(baseUrl.replace(/\/$/, "") + "/api/health?t=" + Date.now(), {
+            signal: ctrl.signal,
+            cache: "no-store"
+          });
+          clearTimeout(t);
+          if (!res.ok) return false;
+          const data = await res.json();
+          return !!(data && data.ok && data.engine === "scummvm-director-wasm");
+        } catch (_) {
+          clearTimeout(t);
+          return false;
+        }
+      }
+
+      async function loadEndpoint() {
+        try {
+          const res = await fetch("endpoint.json?t=" + Date.now(), { cache: "no-store" });
+          if (res.ok) {
+            return await res.json();
+          }
+        } catch (_) {}
+        return window.FORESTIA_ENDPOINT || {
+          lanUrl: "http://192.168.1.111:8791",
+          tunnelUrl: ""
+        };
+      }
+
+      async function connectAndLaunch() {
+        const ep = await loadEndpoint();
+        const lanUrl = (ep && ep.lanUrl) || "http://192.168.1.111:8791";
+        const tunnelUrl = (ep && ep.tunnelUrl) || "";
+        const hash = window.location.hash || "";
+
+        lanLink.href = lanUrl.replace(/\/$/, "") + "/" + hash;
+
+        // When opened over HTTP or file://, prefer ultra-fast local Wi-Fi LAN if reachable
+        if (window.location.protocol !== "https:") {
+          if (await probeHealth(lanUrl, 500)) {
+            window.location.replace(lanUrl.replace(/\/$/, "") + "/" + hash);
+            return true;
+          }
+        }
+
+        // Check Cloudflare HTTPS tunnel (works on 4G/5G and Wi-Fi from HTTPS GitHub Pages)
+        if (tunnelUrl && await probeHealth(tunnelUrl, 3200)) {
+          window.location.replace(tunnelUrl.replace(/\/$/, "") + "/" + hash);
+          return true;
+        }
+
+        statusLine.textContent = "Connexion au Mac en cours…";
+        fallbackBox.classList.add("visible");
+        return false;
+      }
+
+      async function bootLoop() {
+        const ok = await connectAndLaunch();
+        if (!ok) {
+          setTimeout(bootLoop, 3000);
+        }
+      }
+      bootLoop();
+
+      // Pull-to-Refresh (Touch + Mouse, circular SVG arrow ONLY)
+      const ptr = document.getElementById("ptr-indicator");
+      const ptrSvg = ptr.querySelector("svg");
+      let startY = null;
+      let dist = 0;
+      const THRESHOLD = 68;
+
+      const onStart = (y) => {
+        if (window.scrollY <= 0) {
+          startY = y;
+          dist = 0;
+        }
+      };
+      const onMove = (y) => {
+        if (startY === null) return;
+        dist = Math.max(0, y - startY);
+        if (dist > 6) {
+          const p = Math.min(1, dist / THRESHOLD);
+          ptr.style.opacity = String(p);
+          ptr.style.transform = `translate(-50%, ${Math.min(36, dist * 0.45) - 16}px)`;
+          ptrSvg.style.transform = `rotate(${Math.round(p * 300)}deg)`;
+        }
+      };
+      const onEnd = () => {
+        if (startY === null) return;
+        if (dist >= THRESHOLD) {
+          if (navigator.vibrate) navigator.vibrate(12);
+          ptr.style.opacity = "1";
+          ptr.style.transform = "translate(-50%, 14px)";
+          ptr.classList.add("spinning");
+          location.reload();
+        } else {
+          ptr.style.opacity = "0";
+          ptr.style.transform = "translate(-50%, -24px)";
+        }
+        startY = null;
+        dist = 0;
+      };
+
+      window.addEventListener("touchstart", (e) => {
+        if (e.touches.length === 1) onStart(e.touches[0].clientY);
+      }, { passive: true });
+      window.addEventListener("touchmove", (e) => {
+        if (e.touches.length === 1) onMove(e.touches[0].clientY);
+      }, { passive: true });
+      window.addEventListener("touchend", onEnd, { passive: true });
+      window.addEventListener("touchcancel", onEnd, { passive: true });
+
+      window.addEventListener("mousedown", (e) => {
+        if (e.clientY <= 90) onStart(e.clientY);
+      });
+      window.addEventListener("mousemove", (e) => onMove(e.clientY));
+      window.addEventListener("mouseup", onEnd);
+    })();
+  </script>
 </body>
 </html>

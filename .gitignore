@@ -13,5 +13,7 @@ retroarch/config/
 recomp/cd_raw/
 recomp/tools/
 recomp/decompiled/
+scummvm_runtime/
+saves/
 
 

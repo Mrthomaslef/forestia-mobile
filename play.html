@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Forestia" />
+  <meta name="theme-color" content="#030905" />
+  <title>Forestia (1998) — Moteur ScummVM Director</title>
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg" />
+  <link rel="apple-touch-icon" href="assets/icon.svg" />
+  <link rel="manifest" href="manifest.json" />
+  <style>
+    :root {
+      --bg-void: #030905;
+      --hud-bg: rgba(7, 20, 12, 0.84);
+      --hud-border: rgba(74, 222, 128, 0.28);
+      --accent: #22c55e;
+      --accent-gold: #facc15;
+      --text-main: #ecfdf5;
+      --text-dim: #86efac;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: var(--bg-void);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overscroll-behavior-y: contain;
+      touch-action: manipulation;
+    }
+
+    /* Stage container respects safe areas while keeping canvas pixel coords exact */
+    .stage-root {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 50% 45%, #0c2314 0%, #030905 70%);
+    }
+
+    /* Emscripten canvas MUST NOT have border or padding so pointer coordinates stay 1:1 */
+    canvas.emscripten {
+      border: 0 none;
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      outline: none;
+      touch-action: none;
+      background-color: #030905;
+      background-image: url("assets/icon.svg");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 88px 88px;
+    }
+
+    /* Pull-to-Refresh: circular SVG arrow ONLY, zero text */
+    #ptr-indicator {
+      position: fixed;
+      top: max(12px, env(safe-area-inset-top));
+      left: 50%;
+      transform: translate(-50%, -24px);
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: rgba(9, 28, 16, 0.92);
+      border: 1px solid var(--hud-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 60;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+      transition: opacity 0.15s ease;
+    }
+    #ptr-indicator svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    #ptr-indicator.spinning svg {
+      animation: ptr-spin 0.65s linear infinite;
+    }
+    @keyframes ptr-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Collapsible Top-Right HUD (never blocks 640x480 stage, safe-area aware) */
+    .hud-dock {
+      position: fixed;
+      top: max(10px, env(safe-area-inset-top));
+      right: max(10px, env(safe-area-inset-right));
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      touch-action: manipulation;
+    }
+
+    .hud-panel {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--hud-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--hud-border);
+      border-radius: 999px;
+      padding: 4px 8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .hud-dock.collapsed .hud-panel {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(12px) scale(0.95);
+      position: absolute;
+      right: 44px;
+    }
+
+    .hud-btn, .hud-toggle {
+      appearance: none;
+      border: 1px solid transparent;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      height: 34px;
+      padding: 0 10px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: background 0.15s ease, border-color 0.15s ease, opacity 0.2s ease;
+    }
+    .hud-btn:hover, .hud-toggle:hover {
+      background: rgba(34, 197, 94, 0.18);
+      border-color: rgba(74, 222, 128, 0.4);
+    }
+    .hud-btn:active, .hud-toggle:active {
+      transform: scale(0.96);
+    }
+    .hud-btn svg, .hud-toggle svg {
+      width: 15px;
+      height: 15px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    .hud-toggle {
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      background: var(--hud-bg);
+      border: 1px solid var(--hud-border);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+      position: relative;
+    }
+    .hud-dock.collapsed .hud-toggle {
+      opacity: 0.62;
+    }
+    .hud-dock.collapsed .hud-toggle:hover {
+      opacity: 1;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+    }
+    .hud-toggle .status-dot {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 6px;
+      height: 6px;
+    }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 0 8px;
+      height: 26px;
+      border-radius: 999px;
+      font-size: 11px;
+      color: var(--text-dim);
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(74, 222, 128, 0.2);
+      white-space: nowrap;
+    }
+    .status-chip.pad-connected {
+      color: #fef08a;
+      border-color: rgba(250, 204, 21, 0.38);
+      background: rgba(250, 204, 21, 0.12);
+    }
+
+    @media (max-width: 640px) {
+      .hud-btn span {
+        display: none;
+      }
+      .hud-btn {
+        width: 34px;
+        padding: 0;
+      }
+    }
+
+    /* ScummVM WASM Non-Blocking Download Toast (bottom safe-area protected) */
+    #download-modal {
+      position: fixed;
+      left: 50%;
+      bottom: max(22px, calc(env(safe-area-inset-bottom) + 14px));
+      transform: translateX(-50%);
+      width: min(360px, calc(100vw - 28px));
+      background: rgba(8, 24, 14, 0.94);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--hud-border);
+      border-radius: 14px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65);
+      display: none;
+      overflow: hidden;
+      z-index: 50;
+      pointer-events: none;
+    }
+    #download-modal-title {
+      padding: 9px 14px 4px;
+      text-align: center;
+    }
+    #download-modal h3 {
+      margin: 0;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-main);
+      letter-spacing: 0.01em;
+    }
+    #download-modal-content {
+      padding: 6px 14px 11px;
+    }
+    #download-modal-progress {
+      background: rgba(255, 255, 255, 0.09);
+      border-radius: 999px;
+      height: 7px;
+      margin: 6px 0 8px;
+      overflow: hidden;
+      width: 100%;
+    }
+    #download-modal-progress-fill {
+      background: linear-gradient(90deg, #16a34a, #4ade80);
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+    }
+    #download-modal p {
+      margin: 2px 0;
+      font-size: 11px;
+      color: var(--text-dim);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <!-- Pull-to-Refresh Circular Arrow Indicator (SVG only, zero text) -->
+  <div id="ptr-indicator" aria-hidden="true">
+    <svg viewBox="0 0 24 24">
+      <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+      <polyline points="21 3 21 9 15 9" />
+    </svg>
+  </div>
+
+  <!-- Collapsible Single-Action HUD -->
+  <div class="hud-dock" id="hud-dock">
+    <div class="hud-panel" id="hud-panel">
+      <div class="status-chip" id="save-chip" title="Sauvegardes synchronisées sur le Mac">
+        <span class="status-dot"></span>
+        <span id="save-chip-label">Mac Sync</span>
+      </div>
+
+      <button type="button" class="hud-btn" id="btn-kbd" title="Clavier virtuel (saisie du prénom)">
+        <svg viewBox="0 0 24 24">
+          <rect x="2" y="5" width="20" height="14" rx="2" />
+          <line x1="6" y1="9" x2="6.01" y2="9" />
+          <line x1="10" y1="9" x2="10.01" y2="9" />
+          <line x1="14" y1="9" x2="14.01" y2="9" />
+          <line x1="18" y1="9" x2="18.01" y2="9" />
+          <line x1="6" y1="13" x2="6.01" y2="13" />
+          <line x1="18" y1="13" x2="18.01" y2="13" />
+          <line x1="8" y1="16" x2="16" y2="16" />
+        </svg>
+        <span>Clavier</span>
+      </button>
+
+      <button type="button" class="hud-btn" id="btn-esc" title="Passer la séquence (Échap)">
+        <svg viewBox="0 0 24 24">
+          <polygon points="5 4 15 12 5 20 5 4" />
+          <line x1="19" y1="5" x2="19" y2="19" />
+        </svg>
+        <span>Passer</span>
+      </button>
+
+      <button type="button" class="hud-btn" id="btn-menu" title="Menu ScummVM (Volume & Options)">
+        <svg viewBox="0 0 24 24">
+          <line x1="4" y1="6" x2="20" y2="6" />
+          <line x1="4" y1="12" x2="20" y2="12" />
+          <line x1="4" y1="18" x2="20" y2="18" />
+          <circle cx="9" cy="6" r="2" fill="#07140c" />
+          <circle cx="15" cy="12" r="2" fill="#07140c" />
+          <circle cx="10" cy="18" r="2" fill="#07140c" />
+        </svg>
+        <span>Options</span>
+      </button>
+
+      <button type="button" class="hud-btn" id="btn-fs" title="Plein écran">
+        <svg viewBox="0 0 24 24" id="fs-svg">
+          <polyline points="15 3 21 3 21 9" />
+          <polyline points="9 21 3 21 3 15" />
+          <line x1="21" y1="3" x2="14" y2="10" />
+          <line x1="3" y1="21" x2="10" y2="14" />
+        </svg>
+        <span>Plein écran</span>
+      </button>
+    </div>
+
+    <button type="button" class="hud-toggle" id="hud-toggle" title="Afficher / masquer les contrôles">
+      <span class="status-dot"></span>
+      <svg viewBox="0 0 24 24">
+        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+        <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- ScummVM WASM Progress Toast -->
+  <div id="download-modal">
+    <div id="download-modal-title"><h3>Chargement du moteur Director…</h3></div>
+    <div id="download-modal-content">
+      <div id="download-modal-progress">
+        <div id="download-modal-progress-fill"></div>
+      </div>
+      <p id="download-modal-progress-text">Initialisation…</p>
+      <p id="download-modal-speed-text"></p>
+    </div>
+  </div>
+
+  <!-- Fullscreen Stage -->
+  <div class="stage-root">
+    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
+  </div>
+
+  <script>
+    (function () {
+      const canvas = document.getElementById("canvas");
+      const hudDock = document.getElementById("hud-dock");
+      const hudToggle = document.getElementById("hud-toggle");
+      const saveChip = document.getElementById("save-chip");
+      const saveChipLabel = document.getElementById("save-chip-label");
+
+      // Auto-collapse HUD after 4.5s so the 640x480 stage is 100% unobstructed
+      let hudTimer = setTimeout(() => hudDock.classList.add("collapsed"), 4500);
+      const resetHudTimer = () => {
+        clearTimeout(hudTimer);
+        if (!hudDock.classList.contains("collapsed")) {
+          hudTimer = setTimeout(() => hudDock.classList.add("collapsed"), 6000);
+        }
+      };
+      hudToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        hudDock.classList.toggle("collapsed");
+        resetHudTimer();
+      });
+
+      // Unlock WebAudio (SDL3) on first pointer or gamepad interaction
+      const unlockAudio = () => {
+        try {
+          const sdl3 = window.Module && window.Module.SDL3;
+          if (sdl3 && sdl3.audioContext && sdl3.audioContext.state === "suspended") {
+            sdl3.audioContext.resume();
+          }
+        } catch (_) {}
+      };
+      window.addEventListener("pointerdown", unlockAudio, { passive: true });
+      window.addEventListener("keydown", unlockAudio, { passive: true });
+
+      // Synthetic keyboard helper for SDL3 / Emscripten window listeners
+      function sendKeyCombo(key, code, keyCode, ctrlKey) {
+        unlockAudio();
+        canvas.focus();
+        const opts = {
+          key: key,
+          code: code,
+          keyCode: keyCode,
+          which: keyCode,
+          ctrlKey: !!ctrlKey,
+          bubbles: true,
+          cancelable: true
+        };
+        canvas.dispatchEvent(new KeyboardEvent("keydown", opts));
+        setTimeout(() => {
+          canvas.dispatchEvent(new KeyboardEvent("keyup", opts));
+        }, 65);
+        resetHudTimer();
+      }
+
+      document.getElementById("btn-kbd").addEventListener("click", () => {
+        // Ctrl+F7 toggles ScummVM's built-in virtual keyboard (vkeybd_default)
+        sendKeyCombo("F7", "F7", 118, true);
+      });
+
+      document.getElementById("btn-esc").addEventListener("click", () => {
+        sendKeyCombo("Escape", "Escape", 27, false);
+      });
+
+      document.getElementById("btn-menu").addEventListener("click", () => {
+        // Ctrl+F5 opens ScummVM's Global Main Menu
+        sendKeyCombo("F5", "F5", 116, true);
+      });
+
+      document.getElementById("btn-fs").addEventListener("click", async () => {
+        unlockAudio();
+        try {
+          if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+            const el = document.documentElement;
+            if (el.requestFullscreen) await el.requestFullscreen();
+            else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+          } else {
+            if (document.exitFullscreen) await document.exitFullscreen();
+            else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+          }
+        } catch (_) {}
+        resetHudTimer();
+      });
+
+      // Live Save & 8BitDo Controller Status
+      let padConnected = false;
+      let saveCount = 0;
+      function updateStatusChip() {
+        if (padConnected) {
+          saveChip.classList.add("pad-connected");
+          saveChipLabel.textContent = saveCount > 0 ? "8BitDo · Mac OK" : "8BitDo prête";
+        } else {
+          saveChip.classList.remove("pad-connected");
+          saveChipLabel.textContent = saveCount > 0 ? "Sauvegarde Mac OK" : "Mac Sync";
+        }
+      }
+
+      window.addEventListener("forestia-saves-synced", (ev) => {
+        const files = (ev.detail && ev.detail.files) || [];
+        saveCount = files.length;
+        updateStatusChip();
+      });
+
+      const refreshGamepads = () => {
+        try {
+          const pads = navigator.getGamepads ? Array.from(navigator.getGamepads()).filter(Boolean) : [];
+          padConnected = pads.length > 0;
+          updateStatusChip();
+        } catch (_) {}
+      };
+      window.addEventListener("gamepadconnected", refreshGamepads);
+      window.addEventListener("gamepaddisconnected", refreshGamepads);
+      refreshGamepads();
+
+      // Pull-to-Refresh (top bezel only so 640x480 canvas drags are never intercepted)
+      const ptr = document.getElementById("ptr-indicator");
+      const ptrSvg = ptr.querySelector("svg");
+      let pullStartY = null;
+      let pullDist = 0;
+      const THRESHOLD = 72;
+
+      window.addEventListener("touchstart", (e) => {
+        if (e.touches.length === 1 && e.touches[0].clientY <= 34) {
+          pullStartY = e.touches[0].clientY;
+          pullDist = 0;
+        } else {
+          pullStartY = null;
+        }
+      }, { passive: true });
+
+      window.addEventListener("touchmove", (e) => {
+        if (pullStartY === null || e.touches.length !== 1) return;
+        pullDist = Math.max(0, e.touches[0].clientY - pullStartY);
+        if (pullDist > 6) {
+          const progress = Math.min(1, pullDist / THRESHOLD);
+          ptr.style.opacity = String(progress);
+          ptr.style.transform = `translate(-50%, ${Math.min(38, pullDist * 0.45) - 16}px)`;
+          ptrSvg.style.transform = `rotate(${Math.round(progress * 300)}deg)`;
+        }
+      }, { passive: true });
+
+      const finishPull = () => {
+        if (pullStartY === null) return;
+        if (pullDist >= THRESHOLD) {
+          if (navigator.vibrate) navigator.vibrate(12);
+          ptr.style.opacity = "1";
+          ptr.style.transform = "translate(-50%, 14px)";
+          ptr.classList.add("spinning");
+          if (window.ForestiaEngine && window.ForestiaEngine.syncSavesToMac) {
+            window.ForestiaEngine.syncSavesToMac().finally(() => location.reload());
+          } else {
+            location.reload();
+          }
+        } else {
+          ptr.style.opacity = "0";
+          ptr.style.transform = "translate(-50%, -24px)";
+        }
+        pullStartY = null;
+        pullDist = 0;
+      };
+      window.addEventListener("touchend", finishPull, { passive: true });
+      window.addEventListener("touchcancel", finishPull, { passive: true });
+    })();
+
+    var Module = {
+      preRun: [],
+      postRun: [],
+      print: function (text) {
+        if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(" ");
+        console.log("[ScummVM]", text);
+      },
+      printErr: function (text) {
+        if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(" ");
+        console.warn("[ScummVM]", text);
+      },
+      canvas: (function () {
+        var c = document.getElementById("canvas");
+        c.addEventListener("webglcontextlost", function (e) {
+          e.preventDefault();
+          location.reload();
+        }, false);
+        return c;
+      })(),
+      setStatus: function (text) {
+        if (!Module.setStatus.last) Module.setStatus.last = "";
+        if (text === Module.setStatus.last) return;
+        Module.setStatus.last = text;
+        var modal = document.getElementById("download-modal");
+        var titleEl = document.getElementById("download-modal-title").firstElementChild;
+        var fillEl = document.getElementById("download-modal-progress-fill");
+        if (text && text.length > 0 && text !== "All downloads complete.") {
+          modal.style.display = "block";
+          titleEl.textContent = text;
+        } else {
+          modal.style.display = "none";
+          fillEl.style.width = "0%";
+        }
+      },
+      onRuntimeInitialized: function () {
+        if (typeof httpHideProgressBar === "function") {
+          httpHideProgressBar();
+        }
+        document.getElementById("download-modal").style.display = "none";
+      },
+      totalDependencies: 0,
+      monitorRunDependencies: function (left) {
+        this.totalDependencies = Math.max(this.totalDependencies, left);
+        Module.setStatus(left ? "Préparation… (" + (this.totalDependencies - left) + "/" + this.totalDependencies + ")" : "");
+      }
+    };
+  </script>
+  <script async type="text/javascript" src="scummvm.js"></script>
+</body>
+</html>
