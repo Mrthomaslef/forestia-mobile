@@ -1,1 +1,1 @@
-window.FORESTIA_ENDPOINT = {"tunnelUrl": "", "lanUrl": "http://192.168.1.111:8791", "engine": "scummvm-director-wasm", "port": 8791};
+window.FORESTIA_ENDPOINT = {"tunnelUrl": "https://themselves-movers-molecules-asking.trycloudflare.com", "lanUrl": "http://192.168.1.111:8791", "engine": "scummvm-director-wasm", "port": 8791, "updatedAt": "2026-11-09T19:03:05.331055+00:00"};
