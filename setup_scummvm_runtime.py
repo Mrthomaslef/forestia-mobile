@@ -158,7 +158,8 @@ if (window.location.hash.length > 0 && window.location.hash !== "#--launcher") {
               const iniContent = [
                   "[scummvm]",
                   "versioninfo=2.10.0git",
-                  "always_run_fallback_detection_extern=false",
+                  "always_run_fallback_detection_extern=true",
+                  "enable_unsupported_game_warning=false",
                   "savepath=" + savesDir,
                   "vkeybdpath=/data",
                   "vkeybd_pack_name=vkeybd_default",
@@ -175,10 +176,10 @@ if (window.location.hash.length > 0 && window.location.hash !== "#--launcher") {
                   "platform=windows",
                   "gameid=forestia",
                   "description=Forestia (1998, CD-ROM Francais)",
-                  "language=fr",
+                  "language=en",
                   "path=/data/games/forestia",
                   "engineid=director",
-                  "guioptions=noAspect plat_windows gameOption2",
+                  "guioptions=noAspect lang_English plat_windows gameOption2",
                   ""
               ].join("\\n");
               FS.writeFile(settingsPath, iniContent);
