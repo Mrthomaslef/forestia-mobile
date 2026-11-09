@@ -5,6 +5,8 @@ Serveur HTTP local haute performance (port 8791) hébergeant sur le Mac :
 - Les 620 Mo de fichiers originaux du CD-ROM Forestia (1998) servis à la demande (HTTP Range + index.json dynamique)
 - La persistance bidirectionnelle des sauvegardes (`saves/` sur le SSD du Mac + `AAAFORES.TXT`)
 """
+from __future__ import annotations
+
 import base64
 import json
 import mimetypes

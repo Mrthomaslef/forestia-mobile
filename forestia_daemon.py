@@ -6,6 +6,8 @@ Daemon d'orchestration permanent sur le Mac pour Forestia (ScummVM Director WebA
 3. Met à jour `endpoint.json` + `endpoint.js` et les pousse automatiquement sur GitHub Pages
    pour que https://mrthomaslef.github.io/forestia-mobile/ rejoigne toujours le Mac en Wi-Fi ou 4G/5G.
 """
+from __future__ import annotations
+
 import glob
 import json
 import os
