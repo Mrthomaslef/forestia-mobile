@@ -1,7 +1,7 @@
 {
   "tunnelUrl": "https://cabinet-conditioning-editor-limits.trycloudflare.com",
-  "lanUrl": "http://192.168.1.111:8791",
+  "lanUrl": "http://192.168.1.152:8791",
   "engine": "scummvm-director-wasm",
   "port": 8791,
-  "updatedAt": "2026-11-09T19:03:23.142397+00:00"
+  "updatedAt": "2026-11-10T03:03:59.642949+00:00"
 }
